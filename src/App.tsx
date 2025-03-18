@@ -13,7 +13,6 @@ import Portfolio from "./Portfolio.tsx";
 function App() {
 
   const {user, signOut} = useAuthenticator();
-  console.log(user.signInDetails)
 
   return (
     <main>
