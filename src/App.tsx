@@ -34,7 +34,7 @@ function App() {
               <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
             </Nav.Item>
             <Nav.Item>
-              <Button onClick={signOut}>Sign out</Button>
+              <Button onClick={signOut} id="signOutButton">Sign out</Button>
             </Nav.Item>
           {/*  
             
