@@ -28,7 +28,7 @@ export default function Home() {
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
       {/* Stock Ticker */}
       <div className="w-100 bg-dark text-white text-center py-2">
-        <marquee>
+        
           {stockTickerData.map((stock, index) => (
             <span key={index} className="mx-3">
               {stock.symbol}: ${stock.price}{" "}
@@ -37,7 +37,7 @@ export default function Home() {
               </span>
             </span>
           ))}
-        </marquee>
+        
       </div>
 
       {/* Hero Section */}
