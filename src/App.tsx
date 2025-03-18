@@ -53,6 +53,11 @@ function App() {
           </Routes>
 
         </Router>
+
+      {/* Footer */}
+      <footer className="mt-4 text-muted">
+        <p>&copy; {new Date().getFullYear()} Titan Equity Group. All rights reserved.</p>
+      </footer>
     </main>
   );
 }
