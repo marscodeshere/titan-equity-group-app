@@ -1,4 +1,4 @@
-import { useState } from "react";
+{/*import { useState } from "react";*/}
 import { Container, Table, Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -33,7 +33,7 @@ const economicEvents = [
 ];
 
 export default function MarketOverview() {
-  const [visibleWidgets, setVisibleWidgets] = useState({
+{/*  const [visibleWidgets, setVisibleWidgets] = useState({
     "market-indices": true,
     "market-movers": true,
     "global-markets": true,
@@ -50,25 +50,27 @@ export default function MarketOverview() {
     
   };
 
+  */};
+
   return (
     <Container fluid className="py-5 bg-dark text-white text-center">
       <h2 className="text-light mb-4">Market Overview</h2>
 
       {/* Toggle Buttons */}
       <div className="mb-4 d-flex flex-wrap justify-content-center">
-        <Button variant="primary" className="m-2" onClick={() => toggleWidget("market-indices")}>
+        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("market-indices")}*/>
           Toggle Market Indices
         </Button>
-        <Button variant="primary" className="m-2" onClick={() => toggleWidget("market-movers")}>
+        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("market-movers")}*/>
           Toggle Market Movers
         </Button>
-        <Button variant="primary" className="m-2" onClick={() => toggleWidget("global-markets")}>
+        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("global-markets")}*/>
           Toggle Global Markets
         </Button>
-        <Button variant="primary" className="m-2" onClick={() => toggleWidget("trending-stocks")}>
+        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("trending-stocks")}*/>
           Toggle Trending Stocks
         </Button>
-        <Button variant="primary" className="m-2" onClick={() => toggleWidget("economic-events")}>
+        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("economic-events")}*/>
           Toggle Economic Events
         </Button>
       </div>
@@ -77,7 +79,7 @@ export default function MarketOverview() {
       <div className="d-flex flex-column align-items-center">
         {/* First Row: Market Indices, Market Movers, Global Markets */}
         <div className="d-flex justify-content-center flex-wrap w-100">
-          {visibleWidgets["market-indices"] && (
+          {/*{visibleWidgets["market-indices"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "30%" }}>
               <h5>Market Indices</h5>
               <Table striped bordered hover variant="dark">
@@ -101,9 +103,9 @@ export default function MarketOverview() {
                 </tbody>
               </Table>
             </Card>
-          )}
+          {/*)}*/}
 
-          {visibleWidgets["market-movers"] && (
+          {/*{visibleWidgets["market-movers"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "30%" }}>
               <h5>Market Movers</h5>
               <Table striped bordered hover variant="dark">
@@ -127,9 +129,9 @@ export default function MarketOverview() {
                 </tbody>
               </Table>
             </Card>
-          )}
+          {/*)}*/}
 
-          {visibleWidgets["global-markets"] && (
+          {/*{visibleWidgets["global-markets"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "30%" }}>
               <h5>Global Markets</h5>
               <Table striped bordered hover variant="dark">
@@ -151,12 +153,12 @@ export default function MarketOverview() {
                 </tbody>
               </Table>
             </Card>
-          )}
+          {/*)}*/}
         </div>
 
         {/* Second Row: Trending Stocks, Economic Events */}
         <div className="d-flex justify-content-center flex-wrap w-100">
-          {visibleWidgets["trending-stocks"] && (
+          {/*{visibleWidgets["trending-stocks"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "45%" }}>
               <h5>Trending Stocks</h5>
               <Table striped bordered hover variant="dark">
@@ -178,9 +180,9 @@ export default function MarketOverview() {
                 </tbody>
               </Table>
             </Card>
-          )}
+          {/*)}*/}
 
-          {visibleWidgets["economic-events"] && (
+          {/*{visibleWidgets["economic-events"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "45%" }}>
               <h5>Economic Events</h5>
               <Table striped bordered hover variant="dark">
@@ -204,7 +206,7 @@ export default function MarketOverview() {
                 </tbody>
               </Table>
             </Card>
-          )}
+          {/*)}*/}
         </div>
       </div>
     </Container>
