@@ -3,12 +3,14 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { BrowserRouter as Router, Route, Routes, NavLink} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import './App.css';
 {/*import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";*/}
 import Home from './Home.tsx';
 import Portfolio from "./Portfolio.tsx";
 import Market from './Market.tsx';
+import UserTransaction from './UserTransaction.tsx';
 
 
 function App() {
@@ -29,12 +31,13 @@ function App() {
               <NavLink to="/market" className="nav-link">Market</NavLink>
             </Nav.Item>
             <Nav.Item>
+              <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
+            </Nav.Item>
+            <Nav.Item>
               <Button onClick={signOut}>Sign out</Button>
             </Nav.Item>
           {/*  
-            <Nav.Item>
-              <NavLink eventKey="userTransaction" to="/userTransaction" className="nav-link">Transactions</NavLink>
-            </Nav.Item>
+            
             <Nav.Item>
               <NavLink eventKey="admin" to="/admin" className="nav-link">Admin</NavLink>
             </Nav.Item> */}
@@ -45,8 +48,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/portfolio" element={<Portfolio />}/>
             <Route path="/market" element={<Market />}/>
-            {/*<Route path="/userTransaction" element={<UserTransaction />}/>
-            <Route path="/admin" element={<Admin />}/> */}
+            <Route path="/userTransaction" element={<UserTransaction />}/>
+            {/*<Route path="/admin" element={<Admin />}/> */}
           </Routes>
 
         </Router>

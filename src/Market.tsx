@@ -53,7 +53,7 @@ export default function MarketOverview() {
   */};
 
   return (
-    <Container fluid className="py-5 bg-dark text-white text-center">
+    <Container fluid className="py-5 text-white text-center">
       <h2 className="text-light mb-4">Market Overview</h2>
 
       {/* Toggle Buttons */}
