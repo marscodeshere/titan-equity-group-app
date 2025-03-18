@@ -24,6 +24,7 @@ function App() {
             <Nav.Item>
               <NavLink to="/portfolio" className="nav-link">Your Portfolio</NavLink>
             </Nav.Item>
+            
             <Nav.Item>
               <Button onClick={signOut}>Sign out</Button>
             </Nav.Item>
