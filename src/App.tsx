@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, NavLink} from 'react-router-dom
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";*/}
 import Home from './Home.tsx';
+import Portfolio from "./Portfolio.tsx";
 
 
 function App() {
@@ -14,13 +15,10 @@ function App() {
             <Nav.Item>
               <NavLink to="/" className="nav-link">Titan Equity Group</NavLink>
             </Nav.Item>
-      {/*      <Nav.Item>
-              <NavLink eventKey="login" to="/login" className="nav-link">Login/SignUp</NavLink>
-            </Nav.Item>
             <Nav.Item>
-              <NavLink eventKey="portfolio" to="/portfolio" className="nav-link">Your Portfolio</NavLink>
+              <NavLink to="/portfolio" className="nav-link">Your Portfolio</NavLink>
             </Nav.Item>
-            <Nav.Item>
+          {/*  <Nav.Item>
               <NavLink eventKey="market" to="/market" className="nav-link">Market</NavLink>
             </Nav.Item>
             <Nav.Item>
@@ -33,9 +31,8 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
-            {/* <Route path="/login" element={<Login />}/>
             <Route path="/portfolio" element={<Portfolio />}/>
-            <Route path="/market" element={<Market />}/>
+            {/*<Route path="/market" element={<Market />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
             <Route path="/admin" element={<Admin />}/> */}
           </Routes>
