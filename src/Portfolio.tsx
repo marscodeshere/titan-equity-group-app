@@ -62,7 +62,7 @@ export default function Portfolio() {
   };
 
   // Graph Options
-  const options = {
+  {/*const options = {
     responsive: true,
     plugins: {
       legend: {
@@ -110,7 +110,7 @@ export default function Portfolio() {
         grid: { color: "rgba(0,0,0,0.3)" }
       }
     }
-  };
+  }; */}
   return (
     <Container fluid className="d-flex flex-column align-items-center mt-4">
       {/* Portfolio Card */}
