@@ -1,4 +1,5 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { BrowserRouter as Router, Route, Routes, NavLink} from 'react-router-dom';
@@ -12,10 +13,13 @@ import Portfolio from "./Portfolio.tsx";
 import Market from './Market.tsx';
 import UserTransaction from './UserTransaction.tsx';
 
+const {name} = await fetchUserAttributes();
+console.log(name);
 
 function App() {
 
-  const {user, signOut} = useAuthenticator();
+  const {signOut} = useAuthenticator();
+  
 
   return (
     <main>
@@ -42,7 +46,7 @@ function App() {
               <NavLink eventKey="admin" to="/admin" className="nav-link">Admin</NavLink>
             </Nav.Item> */}
           </Nav>
-          <Navbar.Text className="justify-content-end">Signed In as: {user?.signInDetails?.loginId}</Navbar.Text>
+          <Navbar.Text className="justify-content-end">Signed In as: {name}</Navbar.Text>
           
           <Routes>
             <Route path="/" element={<Home />} />
