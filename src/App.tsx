@@ -1,4 +1,5 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { Authenticator } from '@aws-amplify/ui-react';
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { BrowserRouter as Router, Route, Routes, NavLink} from 'react-router-dom';
@@ -12,53 +13,70 @@ import Portfolio from "./Portfolio.tsx";
 import Market from './Market.tsx';
 import UserTransaction from './UserTransaction.tsx';
 
+const authUser = await fetchAuthSession({forceRefresh: true});
+var name = "";
+
+
 function App() {
 
-  const {user, signOut} = useAuthenticator();
-  
+  function checkUser() {
+    if (authUser.tokens?.accessToken.payload["cognito:groups"] == "Admins") {
+      console.log(authUser.tokens?.accessToken.payload["cognito:groups"]);
+        name = "Admin";
+    }
+    else {
+      name = "User";
+    }
+    console.log("User type:" + name);
+  }
 
   return (
-    <main>
-        <Router>
-          <Nav variant="tabs" className="bg-body-tertiary">
-            <Nav.Item>
-              <NavLink to="/" className="nav-link">Titan Equity Group</NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <NavLink to="/portfolio" className="nav-link">Your Portfolio</NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <NavLink to="/market" className="nav-link">Market</NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <Button onClick={signOut} id="signOutButton">Sign out</Button>
-            </Nav.Item>
-          {/*  
+    <Authenticator signUpAttributes={['name']} data-bs-theme="dark">
+      {({signOut}) => (   
+        <main onClick={checkUser}>
+          <Router>
+            <Nav variant="tabs" className="bg-body-tertiary">
+              <Nav.Item>
+                <NavLink to="/" className="nav-link">Titan Equity Group</NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink to="/portfolio" className="nav-link">Your Portfolio</NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink to="/market" className="nav-link">Market</NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <Button onClick={signOut} id="signOutButton">Sign out</Button>
+              </Nav.Item>
+            {/*  
+              
+              <Nav.Item>
+                <NavLink eventKey="admin" to="/admin" className="nav-link">Admin</NavLink>
+              </Nav.Item> */}
+            </Nav>
+            <Navbar.Text className="justify-content-end">Signed In as: {name}</Navbar.Text>
             
-            <Nav.Item>
-              <NavLink eventKey="admin" to="/admin" className="nav-link">Admin</NavLink>
-            </Nav.Item> */}
-          </Nav>
-          <Navbar.Text className="justify-content-end">Signed In as: {user?.signInDetails?.loginId}</Navbar.Text>
-          
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/portfolio" element={<Portfolio />}/>
-            <Route path="/market" element={<Market />}/>
-            <Route path="/userTransaction" element={<UserTransaction />}/>
-            {/*<Route path="/admin" element={<Admin />}/> */}
-          </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/portfolio" element={<Portfolio />}/>
+              <Route path="/market" element={<Market />}/>
+              <Route path="/userTransaction" element={<UserTransaction />}/>
+              {/*<Route path="/admin" element={<Admin />}/> */}
+            </Routes>
 
-        </Router>
+          </Router>
 
-      {/* Footer */}
-      <footer className="mt-4 text-muted">
-        <p>&copy; {new Date().getFullYear()} Titan Equity Group. All rights reserved.</p>
-      </footer>
-    </main>
+          {/* Footer */}
+          <footer className="mt-4 text-muted">
+            <p>&copy; {new Date().getFullYear()} Titan Equity Group. All rights reserved.</p>
+          </footer>
+      </main>
+  )}
+</Authenticator>
+
   );
 }
 
