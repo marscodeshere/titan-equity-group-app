@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import {
   Container,
   Row,
-  Col,
   Form,
-  Button,
   Table,
   Card,
-  Alert,
 } from "react-bootstrap";
+//import {Col,Button, Alert,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
