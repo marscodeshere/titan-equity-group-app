@@ -11,6 +11,7 @@ import Home from './Home.tsx';
 import Portfolio from "./Portfolio.tsx";
 import Market from './Market.tsx';
 import UserTransaction from './UserTransaction.tsx';
+import Admin from './Admin.tsx';
 
 function App() {
 
@@ -34,13 +35,11 @@ function App() {
               <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
             </Nav.Item>
             <Nav.Item>
+              <NavLink to="/admin" className="nav-link">Admin</NavLink>
+            </Nav.Item> 
+            <Nav.Item>
               <Button onClick={signOut} id="signOutButton">Sign out</Button>
             </Nav.Item>
-          {/*  
-            
-            <Nav.Item>
-              <NavLink eventKey="admin" to="/admin" className="nav-link">Admin</NavLink>
-            </Nav.Item> */}
           </Nav>
           <Navbar.Text className="justify-content-end">Signed In as: {user?.signInDetails?.loginId}</Navbar.Text>
           
@@ -49,7 +48,7 @@ function App() {
             <Route path="/portfolio" element={<Portfolio />}/>
             <Route path="/market" element={<Market />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
-            {/*<Route path="/admin" element={<Admin />}/> */}
+            <Route path="/admin" element={<Admin />}/> 
           </Routes>
 
         </Router>
