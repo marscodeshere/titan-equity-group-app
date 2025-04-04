@@ -4,7 +4,7 @@ import { a, defineData,type ClientSchema } from "@aws-amplify/backend";
 const schema = a.schema({
   Stock: a
     .model({
-      stockId: a.id().required(),
+      id: a.id().required(),
       name: a.string(),
       price: a.string(),
       symbol: a.string(),
@@ -15,7 +15,7 @@ const schema = a.schema({
       last: a.string(),
       mentions: a.string(),
     })
-    .identifier(['stockId'])
+    .identifier(['id'])
     .authorization((allow) => [
       allow.authenticated().to(['read']),
       allow.group("Admins").to(['create','update']),
