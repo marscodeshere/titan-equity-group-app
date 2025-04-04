@@ -5,13 +5,20 @@ const schema = a.schema({
   Stock: a
     .model({
       name: a.string(),
-      price: a.string(),
+      price: a.float(),
+      symbol: a.string(),
+      change: a.string(),
     })
     .authorization((allow) => [
       allow.authenticated().to(['read']),
       allow.owner(),
       allow.group("Admins").to(['create']),
     ]),
+  Market: a
+    .model({
+      time: a.string(),
+      value: a.float(),
+    })
 });
 
 export type Schema = ClientSchema<typeof schema>;

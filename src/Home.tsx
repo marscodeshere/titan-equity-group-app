@@ -1,4 +1,3 @@
-import React from "react";
 import Marquee from "react-fast-marquee";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
