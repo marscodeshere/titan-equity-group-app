@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
-import { useAuthenticator, UseAuthenticator } from "@aws-amplify/ui-react";
+import { useAuthenticator} from "@aws-amplify/ui-react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
