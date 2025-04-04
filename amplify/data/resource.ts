@@ -4,6 +4,7 @@ import { a, defineData,type ClientSchema } from "@aws-amplify/backend";
 const schema = a.schema({
   Stock: a
     .model({
+      stockId: a.id().required(),
       name: a.string(),
       price: a.string(),
       symbol: a.string(),
@@ -14,9 +15,10 @@ const schema = a.schema({
       last: a.string(),
       mentions: a.string(),
     })
+    .identifier(['stockId'])
     .authorization((allow) => [
       allow.authenticated().to(['read']),
-      allow.group("Admins").to(['create']),
+      allow.group("Admins").to(['create','update']),
     ]),
   Market: a
     .model({
@@ -31,11 +33,14 @@ const schema = a.schema({
     ]),
   Event: a
     .model({
+      eventId: a.id().required(),
       date: a.datetime(),
       event: a.string(),
       forecast: a.string(),
       previous: a.string(),
-    }).authorization((allow) => [
+    })
+    .identifier(['eventId'])
+    .authorization((allow) => [
       allow.authenticated().to(['read']),
       allow.group("Admins").to(['create']),
     ]),
@@ -49,13 +54,16 @@ const schema = a.schema({
     ]),
   Transaction: a
     .model({
+      transactionId: a.id().required(),
       type: a.string(),
       amount: a.string(),
       date: a.date(),
       stock: a.string(),
       owns: a.boolean().default(false),
 
-    }).authorization((allow) => [
+    })
+    .identifier(['transactionId'])
+    .authorization((allow) => [
       allow.owner().to(['read','create']),
     ]),
 });
