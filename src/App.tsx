@@ -4,9 +4,6 @@ import Navbar from "react-bootstrap/Navbar";
 import { BrowserRouter as Router, Route, Routes, NavLink} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import './App.css';
-{/*import { useEffect, useState } from "react";
-import { type Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";*/}
 import Home from './Home.tsx';
 import Portfolio from "./Portfolio.tsx";
 import Market from './Market.tsx';

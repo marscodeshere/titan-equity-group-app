@@ -6,6 +6,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import "bootstrap/dist/css/bootstrap.min.css";
+{/*import { useEffect, useState } from "react";
+import { type Schema } from "../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";*/}
 
 type MarketDataType = {
   time: string;
