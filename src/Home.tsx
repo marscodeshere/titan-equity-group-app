@@ -6,9 +6,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import "bootstrap/dist/css/bootstrap.min.css";
-{/*import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { type Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";*/}
+import { generateClient } from "aws-amplify/data";
+
+const client = generateClient<Schema>();
 
 type MarketDataType = {
   time: string;
@@ -30,13 +32,13 @@ const marketData: MarketDataType[] = [
   { time: "2PM", value: 4590 },
 ];
 
-const stockTickerData: StockDataType[] = [
+{/*const stockTickerData: StockDataType[] = [
   { symbol: "AAPL", price: 150.25, change: "+1.5%" },
   { symbol: "GOOGL", price: 2803.55, change: "-0.8%" },
   { symbol: "TSLA", price: 720.22, change: "+2.1%" },
   { symbol: "AMZN", price: 3500.99, change: "-1.2%" },
   { symbol: "MSFT", price: 305.15, change: "+0.6%" },
-];
+];*/}
 
 const features: { title: string; desc: string }[] = [
   { title: "Real-Time Trading", desc: "Instant market access." },
@@ -45,17 +47,28 @@ const features: { title: string; desc: string }[] = [
 ];
 
 export default function Home(): JSX.Element {
+  const [stocks, setStocks] = useState<Schema["Stock"]["type"][]>([]);
+
+  const fetchStocks = async () => {
+    const { data: items} = await client.models.Stock.list();
+    setStocks(items);
+  };
+
+  useEffect(() => {
+    fetchStocks();
+  }, []);
+
   return (
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
       {/* Stock Ticker */}
       <div className="w-100 bg-dark text-white text-center py-2">
         <Marquee>
-          {stockTickerData.map((stock, index) => (
-            <span key={index} className="mx-3">
-              {stock.symbol}: ${stock.price}{" "}
-              <span className={stock.change.includes("-") ? "text-danger" : "text-success"}>
+          {stocks.map(({id, price, symbol}) => (
+            <span key={id} className="mx-3">
+              {symbol}: ${price}{" "}
+              {/*<span className={stock.change.includes("-") ? "text-danger" : "text-success"}>
                 ({stock.change})
-              </span>
+              </span>*/}
             </span>
         
           ))}
