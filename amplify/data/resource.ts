@@ -5,22 +5,59 @@ const schema = a.schema({
   Stock: a
     .model({
       name: a.string(),
-      price: a.float(),
+      price: a.string(),
       symbol: a.string(),
       change: a.string(),
+      dayChange: a.string(),
+      volume: a.string(),
+      value: a.string(),
+      last: a.string(),
+      mentions: a.string(),
     })
     .authorization((allow) => [
       allow.authenticated().to(['read']),
-      allow.owner(),
       allow.group("Admins").to(['create']),
     ]),
   Market: a
     .model({
-      time: a.string(),
+      time: a.time(),
       value: a.float(),
+      date: a.date(),
+      close: a.time(),
+      open: a.time(),
     }).authorization((allow) => [
       allow.authenticated().to(['read']),
-    ])
+      allow.group("Admins").to(['create']),
+    ]),
+  Event: a
+    .model({
+      date: a.datetime(),
+      event: a.string(),
+      forecast: a.string(),
+      previous: a.string(),
+    }).authorization((allow) => [
+      allow.authenticated().to(['read']),
+      allow.group("Admins").to(['create']),
+    ]),
+  Portfolio: a
+    .model({
+      value: a.string().default("0.00"),
+      balance: a.string().default("0.00"),
+
+    }).authorization((allow) => [
+        allow.owner().to(["create", "read"]),
+    ]),
+  Transaction: a
+    .model({
+      type: a.string(),
+      amount: a.string(),
+      date: a.date(),
+      stock: a.string(),
+      owns: a.boolean().default(false),
+
+    }).authorization((allow) => [
+      allow.owner().to(['read','create']),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -31,32 +68,3 @@ export const data = defineData({
     defaultAuthorizationMode: "userPool",
   },
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
