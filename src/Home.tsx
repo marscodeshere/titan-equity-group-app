@@ -17,11 +17,11 @@ type MarketDataType = {
   value: number;
 };
 
-type StockDataType = {
+{/*type StockDataType = {
   symbol: string;
   price: number;
   change: string;
-};
+};*/}
 
 const marketData: MarketDataType[] = [
   { time: "9AM", value: 4500 },
@@ -48,6 +48,7 @@ const features: { title: string; desc: string }[] = [
 
 export default function Home(): JSX.Element {
   const [stocks, setStocks] = useState<Schema["Stock"]["type"][]>([]);
+  //const [market, setMarket] = useState<Schema["Market"]["type"][]>([]);
 
   const fetchStocks = async () => {
     const { data: items} = await client.models.Stock.list();
