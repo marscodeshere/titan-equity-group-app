@@ -19,9 +19,6 @@ const schema = a.schema({
       time: a.string(),
       value: a.float(),
     })
-    .authorization((allow) => [
-      allow.authenticated().to(['read']),
-    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

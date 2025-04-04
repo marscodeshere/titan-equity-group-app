@@ -2,6 +2,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
+import { useAuthenticator, UseAuthenticator } from "@aws-amplify/ui-react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -18,10 +19,10 @@ import {
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title);
 
 export default function Portfolio() {
-  const userName = "John Doe";
+  const {user} = useAuthenticator();
+  const fallbackName = user?.signInDetails?.loginId?.split("@")[0];
+  const displayName = fallbackName || "Guest";
   const totalPortfolioValue = "$125,782.35";
-
-  // Mock historical portfolio data (e.g., last 7 days)
   const portfolioHistory = [120000, 121500, 123000, 124200, 125000, 126500, 125782];
 
   // Generate mock dates for X-axis
@@ -61,62 +62,12 @@ export default function Portfolio() {
     ]
   };
 
-  // Graph Options
-  {/*const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        labels: {
-          color: "#000000",
-          font: {
-            weight: "bold",
-            size: 14
-          }
-        }
-      },
-      tooltip: { enabled: true },
-      title: {
-        display: true,
-        text: "7-Day Portfolio Trend",
-        color: "#000000",
-        font: {
-          size: 18,
-          weight: "bold"
-        }
-      }
-    },
-    scales: {
-      x: {
-        display: true,
-        ticks: {
-          color: "#000000",
-          font: { weight: "bold", size: 14 }
-        },
-        grid: { color: "rgba(0,0,0,0)" }
-      },
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: "Portfolio Value ($)",
-          color: "#000000",
-          font: { weight: "bold", size: 16 }
-        },
-        ticks: {
-          color: "#000000",
-          font: { weight: "bold", size: 14 }
-        },
-        grid: { color: "rgba(0,0,0,0.3)" }
-      }
-    }
-  }; */}
   return (
     <Container fluid className="d-flex flex-column align-items-center mt-4">
       {/* Portfolio Card */}
       <Card className="m-3 p-3 bg-dark text-light w-100" style={{ maxWidth: "400px" }}>
         <div className="text-center">
-          <h2 className="fw-bold">{userName}'s Portfolio</h2>
+          <h2 className="fw-bold">{displayName}'s Portfolio</h2>
           <h4>
             Total Value: <span className="text-success">{totalPortfolioValue}</span>
           </h4>
