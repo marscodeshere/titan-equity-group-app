@@ -13,7 +13,15 @@ const client = generateClient<Schema>();
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
+
+    if(portfolio.length === 0) {
+        client.models.Portfolio.create({                
+        });
+    }
+    
     let oldBal = Number(portfolio?.slice(-1)[0].balance);
+    
+    
 
     useEffect(() => {
         client.models.Transaction.observeQuery().subscribe({
