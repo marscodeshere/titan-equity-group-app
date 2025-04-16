@@ -61,6 +61,13 @@ export default function UserTransaction() {
         if(portfolio.length === 0) {
             client.models.Portfolio.create({                
             });
+
+            
+            oldBal = Number(portfolio?.slice(-1)[0].balance);
+
+            if(oldBal < Number(transAmount)) {
+                window.alert("Unable to withdraw. Balance too low for that amount.");
+            }
         } else {
 
             oldBal = Number(portfolio?.slice(-1)[0].balance);
