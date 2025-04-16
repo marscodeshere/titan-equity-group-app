@@ -7,16 +7,21 @@ import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
-const balance = 200.01
+//const balance = 200.01
 const client = generateClient<Schema>();
 
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
+    const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
 
     useEffect(() => {
         client.models.Transaction.observeQuery().subscribe({
           next: (data) => setTransaction([...data.items]),
         });
+
+        client.models.Portfolio.observeQuery().subscribe({
+            next: (data) => setPortfolio([...data.items]),
+          });
     }, []);   
     
     function createDeposits() {
@@ -45,13 +50,15 @@ export default function UserTransaction() {
             date: `${year}-${month}-${date}`
         });
         
+        console.log(portfolio);
       }
+
 
     return (
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${balance}</h2>
+                <h2 className="text-muted">Account Balance: ${}</h2>
                 <br/><br/>
 
 
