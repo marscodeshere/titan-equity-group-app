@@ -13,6 +13,7 @@ const client = generateClient<Schema>();
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
+    let oldBal = Number(portfolio?.slice(-1)[0].balance);
 
     useEffect(() => {
         client.models.Transaction.observeQuery().subscribe({
@@ -43,14 +44,27 @@ export default function UserTransaction() {
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
+        let transAmount = window.prompt("Transaction amount:");
 
         client.models.Transaction.create({
             type: "withdraw",
-            amount: window.prompt("Transaction amount:"), 
+            amount: transAmount, 
             date: `${year}-${month}-${date}`
         });
         
-        console.log(portfolio);
+        if(portfolio.length === 0) {
+            client.models.Portfolio.create({                
+            });
+        } else {
+
+            
+            oldBal = oldBal - Number(transAmount);
+            client.models.Portfolio.create({  
+                balance: oldBal.toString(),              
+            });
+            
+            console.log(portfolio);
+        }
       }
 
 
@@ -58,7 +72,7 @@ export default function UserTransaction() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${}</h2>
+                <h2 className="text-muted">Account Balance: ${oldBal}</h2>
                 <br/><br/>
 
 
