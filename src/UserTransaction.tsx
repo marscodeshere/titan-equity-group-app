@@ -23,15 +23,25 @@ export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
     useEffect(() => {
-        client.models.Stock.observeQuery().subscribe({
+        client.models.Transaction.observeQuery().subscribe({
           next: (data) => setTransaction([...data.items]),
         });
     }, []);   
     
-    function createTransactions() {
-        client.models.Transaction.create({ amount: window.prompt("Transaction amount:") });
+    function createDeposits() {
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
+        client.models.Transaction.create({
+            type: "deposit",
+            amount: window.prompt("Transaction amount:"), 
+            date: `${year}'-'${month}'-'${date}`
+        });
+        
       }
-      
+
     return (
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
@@ -46,7 +56,7 @@ export default function UserTransaction() {
                         <Form.Label className="text-muted">Deposit Amount:</Form.Label>
                         <Form.Control size="lg" type="text" placeholder="00.00" />
                     </Form.Group>
-                    <Button variant="outline-primary" id="depositSubmit" as="input" type="button" value="Submit" onClick={createTransactions}/>
+                    <Button variant="outline-primary" id="depositSubmit" as="input" type="button" value="Submit" onClick={createDeposits}/>
                 </Form>
                 <br/><br/>
 
