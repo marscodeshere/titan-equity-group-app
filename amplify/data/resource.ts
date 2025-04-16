@@ -54,7 +54,6 @@ const schema = a.schema({
     ]),
   Transaction: a
     .model({
-      transactionId: a.id().required(),
       type: a.string(),
       amount: a.string(),
       date: a.date(),
@@ -62,9 +61,8 @@ const schema = a.schema({
       owns: a.boolean().default(false),
 
     })
-    .identifier(['transactionId'])
     .authorization((allow) => [
-      allow.owner().to(['read','create']),
+      allow.owner(),
     ]),
 });
 
