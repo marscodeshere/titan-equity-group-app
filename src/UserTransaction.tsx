@@ -14,7 +14,8 @@ export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
 
-    console.log(portfolio.length)
+    console.log(portfolio.length);
+    console.log(portfolio);
     
     let oldBal;
     
@@ -63,12 +64,19 @@ export default function UserTransaction() {
         } else {
 
             oldBal = Number(portfolio?.slice(-1)[0].balance);
-            oldBal = oldBal - Number(transAmount);
-            client.models.Portfolio.create({  
-                balance: oldBal.toString(),              
-            });
+
+            if(oldBal < Number(transAmount)) {
+                window.alert("Unable to withdraw. Balance too low for that amount.");
+            }
+            else {
+                oldBal = oldBal - Number(transAmount);
+                client.models.Portfolio.create({  
+                    balance: oldBal.toString(),              
+                });
+            }
             
-            console.log(portfolio);
+            
+            console.log("balance: " + portfolio.at(-1)?.balance);
         }
       }
 
