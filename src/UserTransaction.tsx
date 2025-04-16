@@ -14,12 +14,9 @@ export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
 
-    if(portfolio.length === 0) {
-        client.models.Portfolio.create({                
-        });
-    }
+    console.log(portfolio.length)
     
-    let oldBal = Number(portfolio?.slice(-1)[0].balance);
+    let oldBal;
     
     
 
@@ -65,7 +62,7 @@ export default function UserTransaction() {
             });
         } else {
 
-            
+            oldBal = Number(portfolio?.slice(-1)[0].balance);
             oldBal = oldBal - Number(transAmount);
             client.models.Portfolio.create({  
                 balance: oldBal.toString(),              
