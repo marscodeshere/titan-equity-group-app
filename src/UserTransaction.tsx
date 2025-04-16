@@ -36,12 +36,37 @@ export default function UserTransaction() {
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
+        let transAmount = window.prompt("Transaction amount:");
 
         client.models.Transaction.create({
             type: "deposit",
-            amount: window.prompt("Transaction amount:"), 
+            amount: transAmount, 
             date: `${year}-${month}-${date}`
         });
+
+        if(portfolio.length === 0) {
+            client.models.Portfolio.create({                
+            });
+            client.models.Portfolio.create({
+                balance: transAmount,
+            })
+        } else {
+
+            oldBal = Number(portfolio?.slice(-1)[0].balance);
+
+            if(oldBal < Number(transAmount)) {
+                window.alert("Unable to withdraw. Balance too low for that amount.");
+            }
+            else {
+                oldBal = oldBal + Number(transAmount);
+                client.models.Portfolio.create({  
+                    balance: oldBal.toString(),              
+                });
+            }
+            
+            
+            console.log("balance: " + portfolio.at(-1)?.balance);
+        }
         
       }
 
@@ -61,13 +86,8 @@ export default function UserTransaction() {
         if(portfolio.length === 0) {
             client.models.Portfolio.create({                
             });
-
+            window.alert("Unable to withdraw. Balance too low for that amount.");    
             
-            oldBal = Number(portfolio?.slice(-1)[0].balance);
-
-            if(oldBal < Number(transAmount)) {
-                window.alert("Unable to withdraw. Balance too low for that amount.");
-            }
         } else {
 
             oldBal = Number(portfolio?.slice(-1)[0].balance);
