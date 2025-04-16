@@ -56,7 +56,7 @@ const schema = a.schema({
     .model({
       type: a.string(),
       amount: a.string(),
-      date: a.date(),
+      date: a.string(),
       stock: a.string(),
       owns: a.boolean().default(false),
 
