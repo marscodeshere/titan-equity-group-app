@@ -47,9 +47,13 @@ export default function UserTransaction() {
         if(portfolio.length === 0) {
             client.models.Portfolio.create({                
             });
-            client.models.Portfolio.create({
-                balance: transAmount,
-            })
+            location.reload();
+            if(portfolio.length > 0) {
+                client.models.Portfolio.create({
+                    balance: transAmount,
+                })
+            }
+            
         } else {
 
             oldBal = Number(portfolio?.slice(-1)[0].balance);
