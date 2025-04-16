@@ -10,15 +10,6 @@ import { generateClient } from "aws-amplify/data";
 const balance = 200.01
 const client = generateClient<Schema>();
 
-/*const transactionHistData = [
-    {date: "03/17/2025", type: "Deposit", amount: 100.00},
-    {date: "03/17/2025", type: "Purchased Stock", amount: 50.00, stock: "GOOGL"},
-    {date: "03/16/2025", type: "Deposit", amount: 100.00},
-    {date: "03/17/2025", type: "Sold Stock", amount: 50.00, stock: "MSFT"},
-    {date: "03/15/2025", type: "Withdraw", amount: 100.00},
-    {date: "03/14/2025", type: "Purchased Stock", amount: 100.00, stock: "AAPL"}
-]*/
-
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
@@ -29,7 +20,7 @@ export default function UserTransaction() {
     }, []);   
     
     function createDeposits() {
-        let newDate = new Date()
+        let newDate = new Date();
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
@@ -37,7 +28,21 @@ export default function UserTransaction() {
         client.models.Transaction.create({
             type: "deposit",
             amount: window.prompt("Transaction amount:"), 
-            date: `${year}'-'${month}'-'${date}`
+            date: `${year}-${month}-${date}`
+        });
+        
+      }
+
+      function createWithdraw() {
+        let newDate = new Date();
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
+        client.models.Transaction.create({
+            type: "withdraw",
+            amount: window.prompt("Transaction amount:"), 
+            date: `${year}-${month}-${date}`
         });
         
       }
@@ -66,7 +71,7 @@ export default function UserTransaction() {
                         <Form.Label className="text-muted">Withdraw Amount:</Form.Label>
                         <Form.Control size="lg" type="text" placeholder="00.00" />
                     </Form.Group>
-                    <Button variant="outline-primary" id="withdrawSubmit" as="input" type="button" value="Submit"/>
+                    <Button variant="outline-primary" id="withdrawSubmit" as="input" type="button" value="Submit" onClick={createWithdraw}/>
                 </Form>
                 <br/><br/>
             </div>
