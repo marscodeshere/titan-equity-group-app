@@ -12,6 +12,8 @@ const client = generateClient<Schema>();
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
+    const [depo, setDepo] = useState("");
+    const [withdraw, setWithdraw] = useState("");
 
     console.log(portfolio.length);
     console.log(portfolio);
@@ -35,17 +37,16 @@ export default function UserTransaction() {
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
-        let transAmount = window.prompt("Transaction amount:");
 
         client.models.Transaction.create({
             type: "deposit",
-            amount: transAmount, 
+            amount: depo, 
             date: `${year}-${month}-${date}`
         });
 
         if(portfolio.length === 0) {
             client.models.Portfolio.create({
-                balance: transAmount,
+                balance: depo,
             });
                 
         } else {
@@ -53,7 +54,7 @@ export default function UserTransaction() {
             oldBal = Number(portfolio?.slice(-1)[0].balance);
 
 
-                oldBal = oldBal + Number(transAmount);
+                oldBal = oldBal + Number(depo);
                 client.models.Portfolio.create({  
                     balance: oldBal.toString(),              
                 });
@@ -70,11 +71,10 @@ export default function UserTransaction() {
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
-        let transAmount = window.prompt("Transaction amount:");
 
         client.models.Transaction.create({
             type: "withdraw",
-            amount: transAmount, 
+            amount: withdraw, 
             date: `${year}-${month}-${date}`
         });
         
@@ -87,11 +87,11 @@ export default function UserTransaction() {
 
             oldBal = Number(portfolio?.slice(-1)[0].balance);
 
-            if(oldBal < Number(transAmount)) {
+            if(oldBal < Number(withdraw)) {
                 window.alert("Unable to withdraw. Balance too low for that amount.");
             }
             else {
-                oldBal = oldBal - Number(transAmount);
+                oldBal = oldBal - Number(withdraw);
                 client.models.Portfolio.create({  
                     balance: oldBal.toString(),              
                 });
@@ -107,27 +107,27 @@ export default function UserTransaction() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${portfolio?.slice(-1)[0].balance}</h2>
+                <h2 className="text-muted">Account Balance: ${portfolio.at(-1)?.balance}</h2>
                 <br/><br/>
 
 
                 <h2>Add Funds</h2>
-                <Form>
+                <Form onSubmit={createDeposits}>
                     <Form.Group className="mb-3" controlId="depositForm.ControlInput1">
                         <Form.Label className="text-muted">Deposit Amount:</Form.Label>
-                        <Form.Control size="lg" type="text" placeholder="00.00" />
+                        <Form.Control size="lg" type="text" placeholder="00.00" value={depo} onChange={(e) => setDepo(e.target.value)}/>
                     </Form.Group>
-                    <Button variant="outline-primary" id="depositSubmit" as="input" type="button" value="Submit" onClick={createDeposits}/>
+                    <Button variant="outline-primary" id="depositSubmit" as="input" type="submit"/>
                 </Form>
                 <br/><br/>
 
                 <h2>Withdraw Funds</h2>
-                <Form>
+                <Form onSubmit={createWithdraw}>
                     <Form.Group className="mb-3" controlId="withdrawForm.ControlInput1">
                         <Form.Label className="text-muted">Withdraw Amount:</Form.Label>
-                        <Form.Control size="lg" type="text" placeholder="00.00" />
+                        <Form.Control size="lg" type="text" placeholder="00.00" value={withdraw} onChange={(e) => setWithdraw(e.target.value)}/>
                     </Form.Group>
-                    <Button variant="outline-primary" id="withdrawSubmit" as="input" type="button" value="Submit" onClick={createWithdraw}/>
+                    <Button variant="outline-primary" id="withdrawSubmit" as="input" type="submit"/>
                 </Form>
                 <br/><br/>
             </div>
