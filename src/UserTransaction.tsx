@@ -152,7 +152,7 @@ export default function UserTransaction() {
                         <Accordion.Body>
                         <Col>Amount: {trans.amount}</Col> 
                         <Col>{trans.stock}</Col>
-                        <Col>Success: {trans.success ? "Success" : "Failure"}</Col>
+                        <Col>Transaction: {trans.success ? "Success" : "Failure"}</Col>
                         </Accordion.Body>
                     </Accordion.Item>
                 ))}

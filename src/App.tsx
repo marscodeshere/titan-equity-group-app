@@ -43,7 +43,7 @@ export default function App() {
             <Route path="/portfolio" element={<Portfolio />}/>
             <Route path="/market" element={<Market />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
-            <Route path="/admin" element={<Admin />}/> 
+            <Route path="/admin" element={user?.signInDetails?.loginId === "momens@asu.edu" ? <Admin /> : <Home />}/> 
           </Routes>
 
         </Router>
