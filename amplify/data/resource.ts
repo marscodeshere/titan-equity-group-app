@@ -44,14 +44,6 @@ const schema = a.schema({
       allow.authenticated().to(['read']),
       allow.group("Admins").to(['create']),
     ]),
-  Portfolio: a
-    .model({
-      value: a.string().default("0.00"),
-      balance: a.string().default("0.00"),
-
-    }).authorization((allow) => [
-        allow.owner().to(["create", "read"]),
-    ]),
   Transaction: a
     .model({
       type: a.string(),
@@ -59,7 +51,9 @@ const schema = a.schema({
       date: a.string(),
       stock: a.string(),
       owns: a.boolean().default(false),
-
+      accountvalue: a.string(),
+      balance: a.string(),
+      success: a.boolean().default(false),
     })
     .authorization((allow) => [
       allow.owner(),

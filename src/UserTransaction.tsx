@@ -11,25 +11,16 @@ const client = generateClient<Schema>();
 
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
-    const [portfolio, setPortfolio] =  useState<Array<Schema["Portfolio"]["type"]>>([]);
     const [depo, setDepo] = useState("");
     const [withdraw, setWithdraw] = useState("");
-
-    console.log(portfolio.length);
-    console.log(portfolio);
     
     let oldBal;
     
-    
-
     useEffect(() => {
         client.models.Transaction.observeQuery().subscribe({
           next: (data) => setTransaction([...data.items]),
         });
 
-        client.models.Portfolio.observeQuery().subscribe({
-            next: (data) => setPortfolio([...data.items]),
-          });
     }, []);   
     
     function createDeposits() {
@@ -38,78 +29,84 @@ export default function UserTransaction() {
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
 
-        client.models.Transaction.create({
-            type: "deposit",
-            amount: depo, 
-            date: `${year}-${month}-${date}`
-        });
+        console.log("depo amount: " + depo);
+        console.log("old balance: "+ transaction[transaction.length - 1]?.balance);
 
-        if(portfolio.length === 0) {
-            client.models.Portfolio.create({
-                balance: depo,
+        if(transaction.length === 0) {
+            client.models.Transaction.create({
+                type: "deposit",
+                amount: depo, 
+                date: `${year}-${month}-${date}`,
+                balance: `${depo}`,
+                success: true,
             });
                 
         } else {
 
-            oldBal = Number(portfolio[portfolio.length - 1].balance);
-
-
+            oldBal = Number(transaction[transaction.length - 1].balance);
             oldBal = oldBal + Number(depo);
-            client.models.Portfolio.create({  
-                balance: oldBal.toString(),              
+            client.models.Transaction.create({
+                type: "deposit",
+                amount: depo, 
+                date: `${year}-${month}-${date}`,
+                balance: `${oldBal}`,
+                success: true,
             });
+           
+        }    
+    }
 
-            console.log("balance: " + portfolio[portfolio.length - 1].balance);
-            }
-            
-            
-            
-        
-        
-      }
-
-      function createWithdraw() {
+    function createWithdraw() {
         let newDate = new Date();
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
+        oldBal = Number(transaction[transaction.length - 1].balance);
 
-        client.models.Transaction.create({
-            type: "withdraw",
-            amount: withdraw, 
-            date: `${year}-${month}-${date}`
-        });
+        console.log("withdraw amount: " + depo);
+        console.log("old balance: "+ oldBal);
         
-        if(portfolio.length === 0) {
-            client.models.Portfolio.create({                
+        if(transaction.length === 0) {
+            client.models.Transaction.create({
+                type: "withdraw",
+                amount: withdraw, 
+                date: `${year}-${month}-${date}`,
+                balance: `${oldBal}`,
+                success: false,
             });
             window.alert("Unable to withdraw. Balance too low for that amount.");    
             
         } else {
-
-            oldBal = Number(portfolio[portfolio.length - 1].balance);
-
             if(oldBal < Number(withdraw)) {
+                client.models.Transaction.create({
+                    type: "withdraw",
+                    amount: withdraw, 
+                    date: `${year}-${month}-${date}`,
+                    balance: `${oldBal}`,
+                    success: false,
+                });
                 window.alert("Unable to withdraw. Balance too low for that amount.");
             }
             else {
                 oldBal = oldBal - Number(withdraw);
-                client.models.Portfolio.create({  
-                    balance: oldBal.toString(),              
+                client.models.Transaction.create({
+                    type: "withdraw",
+                    amount: withdraw, 
+                    date: `${year}-${month}-${date}`,
+                    balance: `${oldBal}`,
+                    success: true,
                 });
-
-                console.log("balance: " + portfolio[portfolio.length - 1].balance);
             }
-                     
+                    
         }
-      }
+    }
 
 
     return (
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${portfolio[portfolio.length - 1]?.balance}</h2>
+                <h2 className="text-muted">Account Balance: ${transaction[transaction.length - 1]?.balance}</h2>
                 <br/><br/>
 
 
@@ -146,6 +143,7 @@ export default function UserTransaction() {
                         <Accordion.Body>
                         <Col>Amount: {trans.amount}</Col> 
                         <Col>{trans.stock}</Col>
+                        <Col>Success: {trans.success}</Col>
                         </Accordion.Body>
                     </Accordion.Item>
                 ))}
