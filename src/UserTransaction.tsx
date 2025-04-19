@@ -15,6 +15,7 @@ export default function UserTransaction() {
     const [withdraw, setWithdraw] = useState("");
     
     let oldBal;
+    let currentBal;
     
     useEffect(() => {
         client.models.Transaction.observeQuery().subscribe({
@@ -40,6 +41,7 @@ export default function UserTransaction() {
                 balance: `${depo}`,
                 success: true,
             });
+            currentBal = transaction[transaction.length - 1]?.balance;
                 
         } else {
 
@@ -52,7 +54,8 @@ export default function UserTransaction() {
                 balance: `${oldBal.toString()}`,
                 success: true,
             });
-           oldBal = "";
+            currentBal = transaction[transaction.length - 1]?.balance;
+            oldBal = "";
         }    
     }
 
@@ -74,6 +77,7 @@ export default function UserTransaction() {
                 balance: `${oldBal.toString()}`,
                 success: false,
             });
+            currentBal = transaction[transaction.length - 1]?.balance;
             oldBal = "";
             window.alert("Unable to withdraw. Balance too low for that amount.");    
             
@@ -86,6 +90,7 @@ export default function UserTransaction() {
                     balance: `${oldBal.toString()}`,
                     success: false,
                 });
+                currentBal = transaction[transaction.length - 1]?.balance;
                 oldBal = "";
                 window.alert("Unable to withdraw. Balance too low for that amount.");
             }
@@ -98,6 +103,7 @@ export default function UserTransaction() {
                     balance: `${oldBal.toString()}`,
                     success: true,
                 });
+                currentBal = transaction[transaction.length - 1]?.balance;
                 oldBal = "";
             }
                     
@@ -109,7 +115,7 @@ export default function UserTransaction() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${transaction[transaction.length - 1]?.balance}</h2>
+                <h2 className="text-muted">Account Balance: ${currentBal}</h2>
                 <br/><br/>
 
 
@@ -146,7 +152,7 @@ export default function UserTransaction() {
                         <Accordion.Body>
                         <Col>Amount: {trans.amount}</Col> 
                         <Col>{trans.stock}</Col>
-                        <Col>Success: {trans.success}</Col>
+                        <Col>Success: {trans.success ? "Success" : "Failure"}</Col>
                         </Accordion.Body>
                     </Accordion.Item>
                 ))}
