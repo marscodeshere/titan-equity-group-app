@@ -49,10 +49,10 @@ export default function UserTransaction() {
                 type: "deposit",
                 amount: depo, 
                 date: `${year}-${month}-${date}`,
-                balance: `${oldBal}`,
+                balance: `${oldBal.toString()}`,
                 success: true,
             });
-           
+           oldBal = "";
         }    
     }
 
@@ -71,9 +71,10 @@ export default function UserTransaction() {
                 type: "withdraw",
                 amount: withdraw, 
                 date: `${year}-${month}-${date}`,
-                balance: `${oldBal}`,
+                balance: `${oldBal.toString()}`,
                 success: false,
             });
+            oldBal = "";
             window.alert("Unable to withdraw. Balance too low for that amount.");    
             
         } else {
@@ -82,9 +83,10 @@ export default function UserTransaction() {
                     type: "withdraw",
                     amount: withdraw, 
                     date: `${year}-${month}-${date}`,
-                    balance: `${oldBal}`,
+                    balance: `${oldBal.toString()}`,
                     success: false,
                 });
+                oldBal = "";
                 window.alert("Unable to withdraw. Balance too low for that amount.");
             }
             else {
@@ -93,9 +95,10 @@ export default function UserTransaction() {
                     type: "withdraw",
                     amount: withdraw, 
                     date: `${year}-${month}-${date}`,
-                    balance: `${oldBal}`,
+                    balance: `${oldBal.toString()}`,
                     success: true,
                 });
+                oldBal = "";
             }
                     
         }
