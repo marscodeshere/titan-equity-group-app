@@ -80,14 +80,6 @@ export default function Portfolio() {
         <Line data={data} />
       </Card>
 
-      {/* Buttons */}
-      <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-        <Button variant="success">Buy/Sell</Button>
-        <Button variant="danger">Cancel Order</Button>
-        <Button variant="info">Transactions</Button>
-        <Button variant="warning">Deposit/Withdraw</Button>
-      </div>
-
       {/* Watch Stocks */}
       <Card className="m-3 p-3 bg-secondary text-light w-100" style={{ maxWidth: "800px" }}>
         <h5 className="text-center">Top 3 Watch Stocks</h5>
