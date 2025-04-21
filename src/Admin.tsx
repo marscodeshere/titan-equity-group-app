@@ -9,11 +9,24 @@ import {
 } from "react-bootstrap";
 //import {Col,Button, Alert,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useState } from "react";
+import type { Schema } from "../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
+
+const client = generateClient<Schema>();
 
 
 export default function Admin() {
 
     const {user} = useAuthenticator();
+    const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
+
+    useEffect(() => {
+        client.models.Stock.observeQuery().subscribe({
+          next: (data) => setStock([...data.items]),
+        });
+
+    }, []); 
 
     return (
         <Container className="py-4">
@@ -28,20 +41,28 @@ export default function Admin() {
           <Card.Header><h4>📈 Stock Management</h4></Card.Header>
           <Card.Body>
             <Accordion>
-              <Accordion.Item eventKey="">
+            {stock.map((s) => (
+              <Accordion.Item eventKey={s.id}>
                   <Accordion.Header>
-                      <Col>Name</Col> 
+                      <Col>{s.name}</Col> 
                       <Col>Price</Col>
                   </Accordion.Header>
                   <Accordion.Body>
                     <Table striped bordered hover responsive>
                       <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Actions</th></tr></thead>
                       <tbody>
-
+                        <tr>
+                          <td>{s.name}</td>
+                          <td>Symbol</td>
+                          <td>Price</td>
+                          <td>Volume</td>
+                          <td>Actions</td>
+                        </tr>
                       </tbody>
                     </Table>
                   </Accordion.Body>
-              </Accordion.Item>   
+              </Accordion.Item>
+              ))}   
             </Accordion>
 
           </Card.Body>
