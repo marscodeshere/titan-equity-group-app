@@ -1,6 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Dropdown from "react-bootstrap/Dropdown";
 import { BrowserRouter as Router, Route, Routes, NavLink} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import './App.css';
@@ -30,11 +31,17 @@ export default function App() {
               <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
             </Nav.Item>
             <Nav.Item>
-              <NavLink to="/admin" className="nav-link">Admin</NavLink>
+              <Dropdown as={Nav.Item} id="adminMenu">
+                <Dropdown.Toggle as={NavLink} to="/admin">Admin Menu</Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item>Hello there!</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Nav.Item> 
             <Nav.Item>
               <Button onClick={signOut} id="signOutButton">Sign out</Button>
             </Nav.Item>
+
           </Nav>
           <Navbar.Text className="justify-content-end">Signed In as: {user?.signInDetails?.loginId}</Navbar.Text>
           
@@ -43,7 +50,7 @@ export default function App() {
             <Route path="/portfolio" element={<Portfolio />}/>
             <Route path="/market" element={<Market />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
-            <Route path="/admin" element={user?.signInDetails?.loginId === "momens@asu.edu" ? <Admin /> : <Home />}/> 
+            <Route path="/admin" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <Admin /> : <Home />}/> 
           </Routes>
 
         </Router>
