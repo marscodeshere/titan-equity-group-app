@@ -6,8 +6,8 @@ const schema = a.schema({
     .model({
       id: a.id().required(),
       name: a.string(),
-      price: a.string(),
       symbol: a.string(),
+      price: a.string(),
       change: a.string(),
       dayChange: a.string(),
       volume: a.string(),
