@@ -45,18 +45,18 @@ export default function Admin() {
               <Accordion.Item eventKey={s.id}>
                   <Accordion.Header>
                       <Col>{s.name}</Col> 
-                      <Col>Price</Col>
+                      <Col>{s.price}</Col>
                   </Accordion.Header>
                   <Accordion.Body>
                     <Table striped bordered hover responsive>
-                      <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Actions</th></tr></thead>
+                      <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Mentions</th></tr></thead>
                       <tbody>
                         <tr>
                           <td>{s.name}</td>
-                          <td>Symbol</td>
-                          <td>Price</td>
-                          <td>Volume</td>
-                          <td>Actions</td>
+                          <td>{s.symbol}</td>
+                          <td>{s.price}</td>
+                          <td>{s.volume}</td>
+                          <td>{s.mentions}</td>
                         </tr>
                       </tbody>
                     </Table>
