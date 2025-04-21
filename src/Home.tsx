@@ -12,34 +12,6 @@ import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
 
-{/* type MarketDataType = {
-  time: string;
-  value: number;
-};
-
-type StockDataType = {
-  symbol: string;
-  price: number;
-  change: string;
-};
-
-const marketData: MarketDataType[] = [
-  { time: "9AM", value: 4500 },
-  { time: "10AM", value: 4550 },
-  { time: "11AM", value: 4525 },
-  { time: "12PM", value: 4600 },
-  { time: "1PM", value: 4625 },
-  { time: "2PM", value: 4590 },
-];
-
-const stockTickerData: StockDataType[] = [
-  { symbol: "AAPL", price: 150.25, change: "+1.5%" },
-  { symbol: "GOOGL", price: 2803.55, change: "-0.8%" },
-  { symbol: "TSLA", price: 720.22, change: "+2.1%" },
-  { symbol: "AMZN", price: 3500.99, change: "-1.2%" },
-  { symbol: "MSFT", price: 305.15, change: "+0.6%" },
-]; */}
-
 const features: { title: string; desc: string }[] = [
   { title: "Real-Time Trading", desc: "Instant market access." },
   { title: "Portfolio Tracking", desc: "Manage your investments." },
