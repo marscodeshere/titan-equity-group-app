@@ -22,12 +22,12 @@ const schema = a.schema({
     .model({
       time: a.time(),
       value: a.float(),
-      date: a.date(),
+      date: a.string(),
       close: a.time(),
       open: a.time(),
     }).authorization((allow) => [
       allow.authenticated().to(['read']),
-      allow.group("Admins").to(['create']),
+      allow.owner(),
     ]),
   Event: a
     .model({
@@ -40,7 +40,7 @@ const schema = a.schema({
     .identifier(['eventId'])
     .authorization((allow) => [
       allow.authenticated().to(['read']),
-      allow.group("Admins").to(['create']),
+      allow.owner(),
     ]),
   Transaction: a
     .model({
