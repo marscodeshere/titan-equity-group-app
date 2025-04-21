@@ -4,7 +4,6 @@ import { a, defineData,type ClientSchema } from "@aws-amplify/backend";
 const schema = a.schema({
   Stock: a
     .model({
-      id: a.id().required(),
       name: a.string(),
       symbol: a.string(),
       price: a.string(),
@@ -13,7 +12,7 @@ const schema = a.schema({
       volume: a.string(),
       value: a.string(),
       last: a.string(),
-      mentions: a.string(),
+      mentions: a.string().default("0"),
     })
     .authorization((allow) => [
       allow.authenticated().to(['read']),
