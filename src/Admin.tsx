@@ -101,31 +101,6 @@ export default function Admin() {
           </Card.Body>
         </Card>
   
-        <Card className="mb-5">
-          <Card.Header><h4>📜 Admin Activity Logs</h4></Card.Header>
-          <Card.Body>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Search logs by user or action..."
-                /*value={logSearch}
-                onChange={(e) => setLogSearch(e.target.value)}*//>
-            </Form.Group>
-            <Table striped bordered hover responsive>
-              <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Details</th></tr></thead>
-              <tbody>
-                {/*{filteredLogs.map((log) => (
-                  <tr key={log.id}>
-                    <td>{new Date(log.timestamp).toLocaleString()}</td>
-                    <td>{log.user}</td>
-                    <td>{log.action}</td>
-                    <td>{log.details || "-"}</td>
-                  </tr>
-                ))}*/}
-              </tbody>
-            </Table>
-          </Card.Body>
-        </Card>
       </Container>
     );
   }

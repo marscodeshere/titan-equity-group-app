@@ -10,6 +10,8 @@ import Portfolio from "./Portfolio.tsx";
 import Market from './Market.tsx';
 import UserTransaction from './UserTransaction.tsx';
 import Admin from './Admin.tsx';
+import AddStocks from './AddStocks.tsx';
+import ChangeHours from './ChangeHours.tsx';
 
 export default function App() {
 
@@ -34,7 +36,8 @@ export default function App() {
               <Dropdown as={Nav.Item} id="adminMenu">
                 <Dropdown.Toggle as={NavLink} to="/admin">Admin Menu</Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item>Hello there!</Dropdown.Item>
+                  <Dropdown.Item as={NavLink} to="/addStocks">Add Stocks</Dropdown.Item>
+                  <Dropdown.Item as={NavLink} to="/changeHours">Change Hours</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Nav.Item> 
@@ -51,6 +54,8 @@ export default function App() {
             <Route path="/market" element={<Market />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
             <Route path="/admin" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <Admin /> : <Home />}/> 
+            <Route path="/addstocks" element={<AddStocks/>}></Route>
+            <Route path="/changeHours" element={<ChangeHours/>}></Route>
           </Routes>
 
         </Router>
