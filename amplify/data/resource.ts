@@ -52,6 +52,8 @@ const schema = a.schema({
       accountvalue: a.string(),
       balance: a.string(),
       success: a.boolean().default(false),
+      stockId: a.string(),
+      shares: a.string(),
     })
     .authorization((allow) => [
       allow.owner(),
