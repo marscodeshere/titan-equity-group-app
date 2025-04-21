@@ -54,8 +54,8 @@ export default function App() {
             <Route path="/market" element={<Market />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
             <Route path="/admin" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <Admin /> : <Home />}/> 
-            <Route path="/addstocks" element={<AddStocks/>}></Route>
-            <Route path="/changeHours" element={<ChangeHours/>}></Route>
+            <Route path="/addstocks" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <AddStocks/> : <Home />}></Route>
+            <Route path="/changeHours" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <ChangeHours/> : <Home />}></Route>
           </Routes>
 
         </Router>

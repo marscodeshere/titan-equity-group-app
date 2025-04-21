@@ -15,10 +15,9 @@ const schema = a.schema({
       last: a.string(),
       mentions: a.string(),
     })
-    .identifier(['id'])
     .authorization((allow) => [
       allow.authenticated().to(['read']),
-      allow.group("Admins").to(['create','update']),
+      allow.owner(),
     ]),
   Market: a
     .model({
