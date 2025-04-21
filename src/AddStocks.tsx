@@ -11,6 +11,10 @@ export default function AddStocks() {
 
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
     const [name, setName] = useState("");
+    const [symbol, setSymbol] = useState("");
+    const [price, setPrice] = useState("");
+    
+
     useEffect(() => {
         client.models.Stock.observeQuery().subscribe({
             next: (data) => setStock([...data.items]),
@@ -23,6 +27,9 @@ export default function AddStocks() {
 
         client.models.Stock.create({
             name: name,
+            symbol: symbol,
+            price: price,
+
         })
     }
     
@@ -39,6 +46,16 @@ export default function AddStocks() {
                     <Form.Group className="mb-3" controlId="stockForm.ControlInput1">
                         <Form.Label className="text-muted">Stock Name:</Form.Label>
                         <Form.Control size="lg" type="text" placeholder="ABCDEF Stock" value={name} onChange={(e) => setName(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="stockForm.ControlInput2">
+                        <Form.Label className="text-muted">Stock Symbol:</Form.Label>
+                        <Form.Control size="lg" type="text" placeholder="Required, must 5 characters or less." value={symbol} onChange={
+                            (e) => (e.target.value.length > 5) || (e.target.value.length === 0) ? alert("Wrong number of characters for symbol.") : setSymbol(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="stockForm.ControlInput3">
+                        <Form.Label className="text-muted">Stock Price:</Form.Label>
+                        <Form.Control size="lg" type="text" placeholder="Required, format: 00.00" value={price} onChange={
+                            (e) => (e.target.value.length === 0) ? alert("Initial Price is required.") : setPrice(e.target.value)}/>
                     </Form.Group>
                     <Button variant="outline-primary" id="stockSubmit" as="input" type="submit"/>
                 </Form>

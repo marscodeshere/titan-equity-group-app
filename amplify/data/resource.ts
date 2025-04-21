@@ -7,11 +7,11 @@ const schema = a.schema({
       name: a.string(),
       symbol: a.string(),
       price: a.string(),
-      change: a.string(),
-      dayChange: a.string(),
-      volume: a.string(),
-      value: a.string(),
-      last: a.string(),
+      change: a.string().default("0"),
+      dayChange: a.string().default("0"),
+      volume: a.string().default("0"),
+      value: a.string().default("0"),
+      last: a.string().default("0"),
       mentions: a.string().default("0"),
     })
     .authorization((allow) => [
