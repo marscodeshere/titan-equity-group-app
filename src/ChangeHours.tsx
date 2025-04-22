@@ -4,17 +4,18 @@ import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const client = generateClient<Schema>();
 
 export default function ChangeHours() {
 
     const [market, setMarket] = useState<Array<Schema["Market"]["type"]>>([]);
-    const [open, setOpen] = useState("");
+    const [open, setOpen] = useState(new Date());
     const [close, setClose] = useState("");
-    const [openValue, setOpenValue] = useState('');
-    const [closeValue, setCloseValue] = useState('');
 
+    //const [startDate, setStartDate] = useState(new Date());
     useEffect(() => {
         client.models.Market.observeQuery().subscribe({
             next: (data) => setMarket([...data.items]),
@@ -25,8 +26,8 @@ export default function ChangeHours() {
     function editHours() {
         console.log(market);
         client.models.Market.create({
-            open: open+openValue,
-            close: close+closeValue,
+            open: open.toISOString(),
+            close: close,
 
         })        
     }
@@ -43,28 +44,18 @@ export default function ChangeHours() {
                 <Form onSubmit={editHours}>
                     <Form.Group className="mb-3" controlId="hoursForm.ControlInput1">
                         <Form.Label className="text-muted">Opening Time:</Form.Label>
-                        <Form.Control size="lg" type="text" placeholder="#" value={open} onChange={(e) => setOpen(e.target.value)}/>
-                        <Form.Check inline label="AM" name="group1" type="radio" id="inline-radio-1" value="AM" 
-                            checked={openValue==="AM"}
-                            onChange={(e) => setOpenValue(e.target.value)}/>
-                        <Form.Check inline label="PM" name="group1" type="radio" id="inline-radio-2" value="PM"
-                            checked={openValue==="PM"}
-                            onChange={(e) => setOpenValue(e.target.value)}/>
+                        <DatePicker selected={open} onChange={(time) => setOpen(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>       
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="hoursForm.ControlInput2">
                         <Form.Label className="text-muted">Closing Time:</Form.Label>
-                        <Form.Control size="lg" type="text" placeholder="#" value={close} onChange={(e) => setClose(e.target.value)}/>
-                        <Form.Check inline label="AM" name="group2" type="radio" id="inline-radio-3" value="AM" 
-                            checked={closeValue==="AM"}
-                            onChange={(e) => setCloseValue(e.target.value)}/>
-                        <Form.Check inline label="PM" name="group2" type="radio" id="inline-radio-4" value="PM"
-                            checked={closeValue==="PM"}
-                            onChange={(e) => setCloseValue(e.target.value)}/>
+                        <Form.Control size="lg" type="text" placeholder="#" value={close} onChange={(e) => setClose(e.target.value)}/>    
                     </Form.Group>
                     <Button variant="outline-primary" id="hoursSubmit" as="input" type="submit"/>
                 </Form>
                 <br/><br/>
             </div>
-        </Container>        
+        </Container>    
+        
+        //<DatePicker showIcon toggleCalendarOnIconClick isClearable selected={startDate} onChange={(date) => setStartDate(date)} />
     );
 }
