@@ -32,10 +32,11 @@ export default function ChangeHours() {
         return () => clearInterval(intervalId);
       }, []);    
 
-    console.log(market);
-    console.log(open);
-
     function editHours() {
+
+        window.prompt("Are the times of: Open: " + open + " and Close: " + close + " Correct?");
+        console.log(market);
+
         client.models.Markethours.create({
             open: open.toISOString(),
             close: close.toISOString(),
