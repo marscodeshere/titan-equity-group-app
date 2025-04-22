@@ -14,7 +14,7 @@ export default function ChangeHours() {
     const [market, setMarket] = useState<Array<Schema["Markethours"]["type"]>>([]);
     const [open, setOpen] = useState(new Date());
     const [close, setClose] = useState(new Date());
-    var currentTime = new Date();
+    var [currentTime, setCurrentTime] = useState(new Date());
 
     //const [startDate, setStartDate] = useState(new Date());
     useEffect(() => {
@@ -23,6 +23,14 @@ export default function ChangeHours() {
         });
 
     }, []);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          setCurrentTime(new Date());
+        }, 1000);
+    
+        return () => clearInterval(intervalId);
+      }, []);    
 
     console.log(market);
     console.log(open);
@@ -35,16 +43,11 @@ export default function ChangeHours() {
         })        
     }
 
-    function handleOpen() {
-        console.log(open);
-        setOpen(open);
-    }
-
     return (
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to change the hours of the market?</h1>
-                <h2 className="text-muted">Current Time: {currentTime.getHours()}:{currentTime.getMinutes()}</h2>
+                <h2 className="text-muted">Current Time: {currentTime.toLocaleTimeString()}</h2>
                 <br/><br/>
 
 
@@ -52,7 +55,7 @@ export default function ChangeHours() {
                 <Form onSubmit={editHours}>
                     <Form.Group className="mb-3" controlId="hoursForm.ControlInput1">
                         <Form.Label className="text-muted">Opening Time:  </Form.Label>
-                        <DatePicker selected={open} onChange={handleOpen} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>       
+                        <DatePicker selected={open} onChange={(time) => time && setOpen(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>       
                         <br/>
                         <Form.Label className="text-muted">Closing Time:</Form.Label>
                         <DatePicker selected={close} onChange={(time) => time && setClose(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>
