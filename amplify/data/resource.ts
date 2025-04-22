@@ -18,11 +18,9 @@ const schema = a.schema({
       allow.authenticated().to(['read']),
       allow.owner(),
     ]),
-  Market: a
+  Markethours: a
     .model({
-      time: a.time(),
-      value: a.float(),
-      date: a.string(),
+      value: a.float().default(0.0),
       close: a.time(),
       open: a.time(),
     }).authorization((allow) => [

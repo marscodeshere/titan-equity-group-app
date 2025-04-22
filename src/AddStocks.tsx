@@ -37,7 +37,7 @@ export default function AddStocks() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Here you can add or remove stocks.</h1>
-                <h2 className="text-muted">Current Total Number of Stocks:  </h2>
+                <h2 className="text-muted">Current Total Number of Stocks: {stock.length} </h2>
                 <br/><br/>
 
 

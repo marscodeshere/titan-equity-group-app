@@ -20,7 +20,7 @@ const features: { title: string; desc: string }[] = [
 
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
-  const [market, setMarket] = useState<Array<Schema["Market"]["type"]>>([]);
+  const [market, setMarket] = useState<Array<Schema["Markethours"]["type"]>>([]);
 
   useEffect(() => {
       client.models.Stock.observeQuery().subscribe({
@@ -30,7 +30,7 @@ export default function Home(): JSX.Element {
   }, []); 
 
   useEffect(() => {
-      client.models.Market.observeQuery().subscribe({
+      client.models.Markethours.observeQuery().subscribe({
         next: (data) => setMarket([...data.items]),
       });
 
