@@ -44,7 +44,7 @@ export default function ChangeHours() {
                 <Form onSubmit={editHours}>
                     <Form.Group className="mb-3" controlId="hoursForm.ControlInput1">
                         <Form.Label className="text-muted">Opening Time:</Form.Label>
-                        <DatePicker selected={open} onChange={(time) => setOpen(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>       
+                        <DatePicker selected={open} onChange={(time) => time && setOpen(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>       
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="hoursForm.ControlInput2">
                         <Form.Label className="text-muted">Closing Time:</Form.Label>
