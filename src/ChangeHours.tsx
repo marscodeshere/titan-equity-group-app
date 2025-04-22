@@ -14,6 +14,7 @@ export default function ChangeHours() {
     const [market, setMarket] = useState<Array<Schema["Markethours"]["type"]>>([]);
     const [open, setOpen] = useState(new Date());
     const [close, setClose] = useState(new Date());
+    const [selectedDates, setSelectedDates] = useState([new Date()]);
     var [currentTime, setCurrentTime] = useState(new Date());
 
     //const [startDate, setStartDate] = useState(new Date());
@@ -34,7 +35,7 @@ export default function ChangeHours() {
 
     function editHours() {
 
-        window.prompt("Are the times of: Open: " + open + " and Close: " + close + " Correct?");
+        window.prompt("Are the times of: Open: " + open.toISOString() + " and Close: " + close.toISOString() + " Correct?");
         console.log(market);
 
         client.models.Markethours.create({
@@ -42,6 +43,10 @@ export default function ChangeHours() {
             close: close.toISOString(),
 
         })        
+    }
+
+    function selectDays() {
+        console.log(selectedDates);
     }
 
     return (
@@ -64,9 +69,18 @@ export default function ChangeHours() {
                     <Button variant="outline-primary" id="hoursSubmit" as="input" type="submit"/>
                 </Form>
                 <br/><br/>
+
+                <h2>Select Days the Market is Closed</h2>
+                <Form onSubmit={selectDays}>
+                    <Form.Group className="mb-3" controlId="daysForm.ControlInput1">
+                        <Form.Label className="text-muted">Select Dates:  </Form.Label>
+                        <DatePicker showIcon toggleCalendarOnIconClick isClearable selectedDates={selectedDates} selectsMultiple onChange={(time) => time && setSelectedDates(time)} shouldCloseOnSelect={false} disabledKeyboardNavigation/>
+                    </Form.Group>
+                    <Button variant="outline-primary" id="daysSubmit" as="input" type="submit"/>
+                </Form>
+                <br/><br/>
             </div>
         </Container>    
         
-        //<DatePicker showIcon toggleCalendarOnIconClick isClearable selected={startDate} onChange={(date) => setStartDate(date)} />
     );
 }
