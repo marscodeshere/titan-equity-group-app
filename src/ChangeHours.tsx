@@ -38,7 +38,7 @@ export default function ChangeHours() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to change the hours of the market?</h1>
-                <h2 className="text-muted">Current Time: {currentTime.getTime()}</h2>
+                <h2 className="text-muted">Current Time: {currentTime.getDate()}</h2>
                 <br/><br/>
 
 
@@ -47,6 +47,7 @@ export default function ChangeHours() {
                     <Form.Group className="mb-3" controlId="hoursForm.ControlInput1">
                         <Form.Label className="text-muted">Opening Time:  </Form.Label>
                         <DatePicker selected={open} onChange={(time) => time && setOpen(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>       
+                        <br/>
                         <Form.Label className="text-muted">Closing Time:</Form.Label>
                         <DatePicker selected={close} onChange={(time) => time && setClose(time)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption='Time' dateFormat="h:mm aa"/>
                     </Form.Group>
