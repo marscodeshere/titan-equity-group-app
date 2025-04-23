@@ -65,7 +65,8 @@ export default function UserTransaction() {
                 success: true,
             });
 
-            client.models.Account.create({
+            client.models.Account.update({
+                id: account[0].id,
                 balance: oldBal.toFixed(2).toString(),
             });
             oldBal = "";
@@ -112,7 +113,8 @@ export default function UserTransaction() {
                     success: true,
                 });
 
-                client.models.Account.create({
+                client.models.Account.update({
+                    id: account[0].id,
                     balance: oldBal.toFixed(2).toString(),
                 });
                 oldBal = "";
