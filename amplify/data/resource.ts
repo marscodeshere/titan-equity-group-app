@@ -53,8 +53,6 @@ const schema = a.schema({
       date: a.string(),
       stock: a.string(),
       owns: a.boolean().default(false),
-      accountvalue: a.string(),
-      balance: a.string(),
       success: a.boolean().default(false),
       stockId: a.string(),
       shares: a.string(),
@@ -62,6 +60,11 @@ const schema = a.schema({
     .authorization((allow) => [
       allow.owner(),
     ]),
+  Account: a
+  .model({
+    accountvalue: a.string().default("0"),
+    balance: a.string().default("0"),
+  })
 });
 
 export type Schema = ClientSchema<typeof schema>;

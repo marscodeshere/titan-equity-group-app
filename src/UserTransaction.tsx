@@ -11,11 +11,11 @@ const client = generateClient<Schema>();
 
 export default function UserTransaction() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
+    const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
     const [depo, setDepo] = useState("");
     const [withdraw, setWithdraw] = useState("");
     
     let oldBal;
-    let currentBal;
     
     useEffect(() => {
         client.models.Transaction.observeQuery().subscribe({
@@ -23,6 +23,14 @@ export default function UserTransaction() {
         });
 
     }, []);   
+
+        
+    useEffect(() => {
+        client.models.Account.observeQuery().subscribe({
+          next: (data) => setAccount([...data.items]),
+        });
+
+    }, []); 
     
     function createDeposits() {
         let newDate = new Date();
@@ -31,30 +39,35 @@ export default function UserTransaction() {
         let year = newDate.getFullYear();
 
         console.log("depo amount: " + depo);
-        console.log("old balance: "+ transaction[transaction.length - 1]?.balance);
+        console.log("old balance: "+ account[0].balance);
 
-        if(transaction.length === 0) {
+        if(account.length === 0) {
             client.models.Transaction.create({
                 type: "deposit",
                 amount: Number(depo).toFixed(2).toString(), 
-                date: `${year}-${month}-${date}`,
-                balance: Number(depo).toFixed(2).toString(),
+                date: `${year}-${month}-${date}`,      
                 success: true,
             });
-            currentBal = transaction[transaction.length - 1]?.balance;
+
+            client.models.Account.create({
+                balance: Number(depo).toFixed(2).toString(),
+            });
+
                 
         } else {
 
-            oldBal = Number(transaction[transaction.length - 1].balance);
+            oldBal = Number(account[0].balance);
             oldBal = oldBal + Number(depo);
             client.models.Transaction.create({
                 type: "deposit",
                 amount: Number(depo).toFixed(2).toString(), 
                 date: `${year}-${month}-${date}`,
-                balance: oldBal.toFixed(2).toString(),
                 success: true,
             });
-            currentBal = transaction[transaction.length - 1]?.balance;
+
+            client.models.Account.create({
+                balance: oldBal.toFixed(2).toString(),
+            });
             oldBal = "";
         }    
     }
@@ -64,20 +77,18 @@ export default function UserTransaction() {
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
-        oldBal = Number(transaction[transaction.length - 1].balance);
+        oldBal = Number(account[0].balance);
 
         console.log("withdraw amount: " + depo);
         console.log("old balance: "+ oldBal);
         
-        if(transaction.length === 0) {
+        if(account.length === 0) {
             client.models.Transaction.create({
                 type: "withdraw",
                 amount: Number(withdraw).toFixed(2).toString(), 
                 date: `${year}-${month}-${date}`,
-                balance: oldBal.toFixed(2).toString(),
                 success: false,
             });
-            currentBal = transaction[transaction.length - 1]?.balance;
             oldBal = "";
             window.alert("Unable to withdraw. Balance too low for that amount.");    
             
@@ -87,10 +98,8 @@ export default function UserTransaction() {
                     type: "withdraw",
                     amount: Number(withdraw).toFixed(2).toString(), 
                     date: `${year}-${month}-${date}`,
-                    balance: oldBal.toFixed(2).toString(),
                     success: false,
                 });
-                currentBal = transaction[transaction.length - 1]?.balance;
                 oldBal = "";
                 window.alert("Unable to withdraw. Balance too low for that amount.");
             }
@@ -100,10 +109,12 @@ export default function UserTransaction() {
                     type: "withdraw",
                     amount: Number(withdraw).toFixed(2).toString(), 
                     date: `${year}-${month}-${date}`,
-                    balance: oldBal.toFixed(2).toString(),
                     success: true,
                 });
-                currentBal = transaction[transaction.length - 1]?.balance;
+
+                client.models.Account.create({
+                    balance: oldBal.toFixed(2).toString(),
+                });
                 oldBal = "";
             }
                     
@@ -115,7 +126,7 @@ export default function UserTransaction() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${currentBal}</h2>
+                <h2 className="text-muted">Account Balance: ${account[0].balance}</h2>
                 <br/><br/>
 
 
