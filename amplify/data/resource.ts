@@ -27,6 +27,13 @@ const schema = a.schema({
       allow.authenticated().to(['read']),
       allow.owner(),
     ]),
+  Marketdays: a
+    .model({
+      closedays: a.string(),
+    }).authorization((allow) =>[
+      allow.authenticated().to(['read']),
+      allow.owner(),      
+    ]),
   Event: a
     .model({
       eventId: a.id().required(),

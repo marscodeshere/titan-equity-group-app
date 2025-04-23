@@ -80,11 +80,11 @@ export default function Admin() {
           <Card.Header><h4>🕒 Market Hours</h4></Card.Header>
           <Card.Body>
           <Accordion>
-          {time.map((t) => (
+          {time.map((t, index) => (
               <Accordion.Item eventKey="">
                   <Accordion.Header>
-                      <Col>Time Change #</Col> 
-                      <Col>Date of Change</Col>
+                      <Col>Time Change #{index}</Col> 
+                      <Col>Date of Change: {t.createdAt.slice(0,9)}</Col>
                   </Accordion.Header>
                   <Accordion.Body>
                     <Table striped bordered hover responsive>
