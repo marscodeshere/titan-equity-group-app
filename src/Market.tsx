@@ -1,13 +1,12 @@
 {/*import { useState } from "react";*/}
-import { Container, Table, Card, Button } from "react-bootstrap";
+import { Container, Table, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useState } from "react";
+import type { Schema } from "../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
 
-// Sample Data
-const marketIndices = [
-  { name: "S&P 500", value: "4,500.32", change: "+1.23%", dayChange: "+55.60" },
-  { name: "NASDAQ", value: "14,120.67", change: "-0.98%", dayChange: "-140.50" },
-  { name: "Dow Jones", value: "35,200.12", change: "+0.45%", dayChange: "+180.22" },
-];
+const client = generateClient<Schema>();
+var indices;
 
 const marketMovers = [
   { symbol: "AAPL", last: "$175.32", change: "+3.45%", volume: "78M" },
@@ -33,47 +32,24 @@ const economicEvents = [
 ];
 
 export default function MarketOverview() {
-{/*  const [visibleWidgets, setVisibleWidgets] = useState({
-    "market-indices": true,
-    "market-movers": true,
-    "global-markets": true,
-    "trending-stocks": true,
-    "economic-events": true,
-  });
+  const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
 
-  // Toggle Widget Visibility
-  const toggleWidget = (widgetKey) => {
-    setVisibleWidgets((prev) => ({
-      ...prev,
-      [widgetKey]: !prev[widgetKey],
-    }));
-    
-  };
+  useEffect(() => {
+      client.models.Stock.observeQuery().subscribe({
+        next: (data) => setStock([...data.items]),
+      });
 
-  */};
+  }, []);
+  
+  function findIndices() {
+    indices = stock;
+    console.log(indices);
+  }
 
+  findIndices()
   return (
     <Container fluid className="py-5 text-white text-center">
       <h2 className="text-light mb-4">Market Overview</h2>
-
-      {/* Toggle Buttons */}
-      <div className="mb-4 d-flex flex-wrap justify-content-center">
-        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("market-indices")}*/>
-          Toggle Market Indices
-        </Button>
-        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("market-movers")}*/>
-          Toggle Market Movers
-        </Button>
-        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("global-markets")}*/>
-          Toggle Global Markets
-        </Button>
-        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("trending-stocks")}*/>
-          Toggle Trending Stocks
-        </Button>
-        <Button variant="primary" className="m-2" /*onClick={() => toggleWidget("economic-events")}*/>
-          Toggle Economic Events
-        </Button>
-      </div>
 
       {/* Centered Layout for Widgets */}
       <div className="d-flex flex-column align-items-center">
@@ -82,22 +58,20 @@ export default function MarketOverview() {
           {/*{visibleWidgets["market-indices"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "30%" }}>
               <h5>Market Indices</h5>
-              <Table striped bordered hover variant="dark">
+              <Table striped bordered hover responsive variant="dark">
                 <thead>
                   <tr>
                     <th>Index</th>
-                    <th>Value</th>
-                    <th>% Change</th>
-                    <th>Day Change</th>
+                    <th>Price</th>
+                    <th>Change</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {marketIndices.map((index) => (
-                    <tr key={index.name}>
-                      <td>{index.name}</td>
-                      <td>{index.value}</td>
-                      <td style={{ color: index.change.includes("-") ? "red" : "green" }}>{index.change}</td>
-                      <td>{index.dayChange}</td>
+                  {stock.map((s) => (
+                    <tr key={s.name}>
+                      <td>{s.name}</td>
+                      <td>{s.price}</td>
+                      <td style={{ color: s.change?.includes("-") ? "red" : "green" }}>{s.change}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -108,12 +82,12 @@ export default function MarketOverview() {
           {/*{visibleWidgets["market-movers"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "30%" }}>
               <h5>Market Movers</h5>
-              <Table striped bordered hover variant="dark">
+              <Table striped bordered hover responsive variant="dark">
                 <thead>
                   <tr>
                     <th>Symbol</th>
                     <th>Last</th>
-                    <th>% Change</th>
+                    <th>Change</th>
                     <th>Volume</th>
                   </tr>
                 </thead>
@@ -134,12 +108,12 @@ export default function MarketOverview() {
           {/*{visibleWidgets["global-markets"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "30%" }}>
               <h5>Global Markets</h5>
-              <Table striped bordered hover variant="dark">
+              <Table striped bordered hover responsive variant="dark">
                 <thead>
                   <tr>
                     <th>Market</th>
                     <th>Value</th>
-                    <th>% Change</th>
+                    <th>Change</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -161,7 +135,7 @@ export default function MarketOverview() {
           {/*{visibleWidgets["trending-stocks"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "45%" }}>
               <h5>Trending Stocks</h5>
-              <Table striped bordered hover variant="dark">
+              <Table striped bordered hover responsive variant="dark">
                 <thead>
                   <tr>
                     <th>Symbol</th>
@@ -185,7 +159,7 @@ export default function MarketOverview() {
           {/*{visibleWidgets["economic-events"] && (*/}
             <Card className="m-2 p-3 bg-secondary text-light" style={{ width: "45%" }}>
               <h5>Economic Events</h5>
-              <Table striped bordered hover variant="dark">
+              <Table striped bordered hover responsive variant="dark">
                 <thead>
                   <tr>
                     <th>Date</th>

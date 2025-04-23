@@ -79,7 +79,7 @@ export default function Home(): JSX.Element {
     client.models.Stock.update({
       id: stock[randIndex].id,
       price: newPrice.toString(),
-      change: change.toString(),
+      change: "+"+ change.toString(),
       last: oldPrice.toString(),
       mentions: mentions.toString(),
     });
