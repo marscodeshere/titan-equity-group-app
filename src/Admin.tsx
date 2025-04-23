@@ -80,7 +80,7 @@ export default function Admin() {
           <Card.Header><h4>🕒 Market Hours</h4></Card.Header>
           <Card.Body>
           <Accordion>
-          {time.map((s) => (
+          {time.map((t) => (
               <Accordion.Item eventKey="">
                   <Accordion.Header>
                       <Col>Time Change #</Col> 
@@ -91,9 +91,9 @@ export default function Admin() {
                       <thead><tr><th>Time When Altered</th><th>Time Open</th><th>Time Close</th></tr></thead>
                       <tbody>
                       <tr>
-                        <td>{s.createdAt}</td>
-                        <td>{s.open}</td>
-                        <td>{s.close}</td>
+                        <td>{t.createdAt}</td>
+                        <td>{t.open}</td>
+                        <td>{t.close}</td>
                       </tr>
                       </tbody>
                     </Table>

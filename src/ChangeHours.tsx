@@ -17,6 +17,9 @@ export default function ChangeHours() {
     const [selectedDates, setSelectedDates] = useState([new Date()]);
     var [currentTime, setCurrentTime] = useState(new Date());
     var stringDates = "";
+    var mon = "";
+    var monNum;
+    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
     //const [startDate, setStartDate] = useState(new Date());
     useEffect(() => {
@@ -47,8 +50,21 @@ export default function ChangeHours() {
 
     function selectDays() {
         for(let i=0; i<selectedDates.length; i++) {
-            stringDates += selectedDates[i].toString().substring(4,15).replace(/\s/g,"/") + ",";
-            
+            mon = selectedDates[i].toString().substring(4,15).replace(/\s/g,"/") + ",";
+            for(let i=0; i<months.length; i++) {
+                if(mon.includes(months[i])) {
+                    monNum = i + 1;
+                    if(monNum<10) {
+                        monNum = "0" + monNum.toString()
+                        mon.replace(months[i], monNum);
+                    }
+                    else {
+                        mon.replace(months[i], monNum.toString()); 
+                    }
+                    
+                }
+            }
+            stringDates += mon;
         }
         window.alert(stringDates);  
         console.log(market);      
