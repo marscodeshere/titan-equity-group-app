@@ -21,6 +21,7 @@ export default function Admin() {
     const {user} = useAuthenticator();
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
     const [time, setTime] = useState<Array<Schema["Markethours"]["type"]>>([]);
+    const [days, setDays] = useState<Array<Schema["Marketdays"]["type"]>>([]);
 
     useEffect(() => {
         client.models.Stock.observeQuery().subscribe({
@@ -35,6 +36,13 @@ export default function Admin() {
       });
 
   }, []); 
+
+  useEffect(() => {
+    client.models.Marketdays.observeQuery().subscribe({
+      next: (data) => setDays([...data.items]),
+    });
+
+    }, []); 
 
     return (
         <Container className="py-4">
@@ -81,7 +89,7 @@ export default function Admin() {
           <Card.Body>
           <Accordion>
           {time.map((t, index) => (
-              <Accordion.Item eventKey="">
+              <Accordion.Item eventKey={t.id}>
                   <Accordion.Header>
                       <Col>Time Change #{index}</Col> 
                       <Col>Date of Change: {t.createdAt.slice(0,9)}</Col>
@@ -94,6 +102,33 @@ export default function Admin() {
                         <td>{t.createdAt}</td>
                         <td>{t.open}</td>
                         <td>{t.close}</td>
+                      </tr>
+                      </tbody>
+                    </Table>
+                  </Accordion.Body>
+              </Accordion.Item>
+              ))}    
+            </Accordion>
+          </Card.Body>
+        </Card>
+
+        <Card className="mb-5">
+          <Card.Header><h4>🕒 Market Days</h4></Card.Header>
+          <Card.Body>
+          <Accordion>
+          {days.map((d, index) => (
+              <Accordion.Item eventKey={d.id}>
+                  <Accordion.Header>
+                      <Col>Day Change #{index}</Col> 
+                      <Col>Date of Change: {d.createdAt.slice(0,9)}</Col>
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <Table striped bordered hover responsive>
+                      <thead><tr><th>Time When Altered</th><th>Dates Closed</th></tr></thead>
+                      <tbody>
+                      <tr>
+                        <td>{d.createdAt}</td>
+                        <td>{d.closedays}</td>
                       </tr>
                       </tbody>
                     </Table>
