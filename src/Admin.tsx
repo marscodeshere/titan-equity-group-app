@@ -1,4 +1,3 @@
-//import React, { useState, useEffect } from "react";
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import {
   Container,

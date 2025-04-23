@@ -18,6 +18,8 @@ const features: { title: string; desc: string }[] = [
   { title: "Market Insights", desc: "AI-driven analytics." },
 ];
 
+var randIndex;
+
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
   const [market, setMarket] = useState<Array<Schema["Markethours"]["type"]>>([]);
@@ -35,6 +37,13 @@ export default function Home(): JSX.Element {
       });
 
   }, []);
+
+  function generateRandom() {
+    randIndex = Math.floor(Math.random() * (stock.length - 1));
+    console.log(stock[randIndex]);
+  }
+
+  setInterval(generateRandom, 100000);
 
   return (
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
