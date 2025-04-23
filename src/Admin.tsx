@@ -20,6 +20,7 @@ export default function Admin() {
 
     const {user} = useAuthenticator();
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
+    const [time, setTime] = useState<Array<Schema["Markethours"]["type"]>>([]);
 
     useEffect(() => {
         client.models.Stock.observeQuery().subscribe({
@@ -27,6 +28,13 @@ export default function Admin() {
         });
 
     }, []); 
+
+    useEffect(() => {
+      client.models.Markethours.observeQuery().subscribe({
+        next: (data) => setTime([...data.items]),
+      });
+
+  }, []); 
 
     return (
         <Container className="py-4">
@@ -72,6 +80,7 @@ export default function Admin() {
           <Card.Header><h4>🕒 Market Hours</h4></Card.Header>
           <Card.Body>
           <Accordion>
+          {time.map((s) => (
               <Accordion.Item eventKey="">
                   <Accordion.Header>
                       <Col>Time Change #</Col> 
@@ -79,13 +88,18 @@ export default function Admin() {
                   </Accordion.Header>
                   <Accordion.Body>
                     <Table striped bordered hover responsive>
-                      <thead><tr><th>Current Time</th><th>Dates Closed</th><th>Time Open</th><th>Time Close</th></tr></thead>
+                      <thead><tr><th>Time When Altered</th><th>Time Open</th><th>Time Close</th></tr></thead>
                       <tbody>
-
+                      <tr>
+                        <td>{s.createdAt}</td>
+                        <td>{s.open}</td>
+                        <td>{s.close}</td>
+                      </tr>
                       </tbody>
                     </Table>
                   </Accordion.Body>
-              </Accordion.Item>   
+              </Accordion.Item>
+              ))}    
             </Accordion>
           </Card.Body>
         </Card>
