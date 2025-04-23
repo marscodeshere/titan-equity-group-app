@@ -6,24 +6,11 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
-var indices;
-
-const marketMovers = [
-  { symbol: "AAPL", last: "$175.32", change: "+3.45%", volume: "78M" },
-  { symbol: "TSLA", last: "$720.12", change: "-5.20%", volume: "105M" },
-  { symbol: "NVDA", last: "$498.80", change: "+2.12%", volume: "92M" },
-];
 
 const globalMarkets = [
   { name: "Nikkei 225", value: "32,100.50", change: "+1.50%" },
   { name: "DAX (Germany)", value: "15,780.20", change: "-0.80%" },
   { name: "Crude Oil", value: "$85.12", change: "+2.30%" },
-];
-
-const trendingStocks = [
-  { symbol: "AMC", last: "$14.50", mentions: "45K" },
-  { symbol: "GME", last: "$22.80", mentions: "55K" },
-  { symbol: "TSLA", last: "$720.12", mentions: "60K" },
 ];
 
 const economicEvents = [
@@ -41,13 +28,19 @@ export default function MarketOverview() {
 
   }, []);
   
-  function findIndices() {
-    indices = stock;
-    indices.sort((a, b) => Number(b.price) - Number(a.price));
-    console.log(indices);
-  }
+  var indices;
+  var movers;
+  var trends;
+  indices = stock;
+  indices.sort((a, b) => Number(b.price) - Number(a.price));
+  indices.length = 5;
+  movers = stock;
+  movers.sort((a, b) => Number(b.change?.replace("-", "")) - Number(a.change?.replace("-", "")));
+  movers.length = 5;
+  trends = stock;
+  trends.sort((a, b) => Number(b.mentions) - Number(a.mentions));
+  trends.length =5;
 
-  findIndices()
   return (
     <Container fluid className="py-5 text-white text-center">
       <h2 className="text-light mb-4">Market Overview</h2>
@@ -68,7 +61,7 @@ export default function MarketOverview() {
                   </tr>
                 </thead>
                 <tbody>
-                  {stock.map((s) => (
+                  {indices.map((s) => (
                     <tr key={s.name}>
                       <td>{s.name}</td>
                       <td>{s.price}</td>
@@ -93,11 +86,11 @@ export default function MarketOverview() {
                   </tr>
                 </thead>
                 <tbody>
-                  {marketMovers.map((mover) => (
+                  {movers.map((mover) => (
                     <tr key={mover.symbol}>
                       <td>{mover.symbol}</td>
                       <td>{mover.last}</td>
-                      <td style={{ color: mover.change.includes("-") ? "red" : "green" }}>{mover.change}</td>
+                      <td style={{ color: mover.change?.includes("-") ? "red" : "green" }}>{mover.change}</td>
                       <td>{mover.volume}</td>
                     </tr>
                   ))}
@@ -145,7 +138,7 @@ export default function MarketOverview() {
                   </tr>
                 </thead>
                 <tbody>
-                  {trendingStocks.map((stock) => (
+                  {trends.map((stock) => (
                     <tr key={stock.symbol}>
                       <td>{stock.symbol}</td>
                       <td>{stock.last}</td>
