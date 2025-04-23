@@ -36,9 +36,9 @@ export default function UserTransaction() {
         if(transaction.length === 0) {
             client.models.Transaction.create({
                 type: "deposit",
-                amount: depo, 
+                amount: Number(depo).toFixed(2).toString(), 
                 date: `${year}-${month}-${date}`,
-                balance: `${depo}`,
+                balance: Number(depo).toFixed(2).toString(),
                 success: true,
             });
             currentBal = transaction[transaction.length - 1]?.balance;
@@ -49,9 +49,9 @@ export default function UserTransaction() {
             oldBal = oldBal + Number(depo);
             client.models.Transaction.create({
                 type: "deposit",
-                amount: depo, 
+                amount: Number(depo).toFixed(2).toString(), 
                 date: `${year}-${month}-${date}`,
-                balance: `${oldBal.toString()}`,
+                balance: oldBal.toFixed(2).toString(),
                 success: true,
             });
             currentBal = transaction[transaction.length - 1]?.balance;
@@ -72,9 +72,9 @@ export default function UserTransaction() {
         if(transaction.length === 0) {
             client.models.Transaction.create({
                 type: "withdraw",
-                amount: withdraw, 
+                amount: Number(withdraw).toFixed(2).toString(), 
                 date: `${year}-${month}-${date}`,
-                balance: `${oldBal.toString()}`,
+                balance: oldBal.toFixed(2).toString(),
                 success: false,
             });
             currentBal = transaction[transaction.length - 1]?.balance;
@@ -85,9 +85,9 @@ export default function UserTransaction() {
             if(oldBal < Number(withdraw)) {
                 client.models.Transaction.create({
                     type: "withdraw",
-                    amount: withdraw, 
+                    amount: Number(withdraw).toFixed(2).toString(), 
                     date: `${year}-${month}-${date}`,
-                    balance: `${oldBal.toString()}`,
+                    balance: oldBal.toFixed(2).toString(),
                     success: false,
                 });
                 currentBal = transaction[transaction.length - 1]?.balance;
@@ -98,9 +98,9 @@ export default function UserTransaction() {
                 oldBal = oldBal - Number(withdraw);
                 client.models.Transaction.create({
                     type: "withdraw",
-                    amount: withdraw, 
+                    amount: Number(withdraw).toFixed(2).toString(), 
                     date: `${year}-${month}-${date}`,
-                    balance: `${oldBal.toString()}`,
+                    balance: oldBal.toFixed(2).toString(),
                     success: true,
                 });
                 currentBal = transaction[transaction.length - 1]?.balance;

@@ -56,9 +56,9 @@ export default function Home(): JSX.Element {
 
       client.models.Stock.update({
         id: randNightChanges[i],
-        price: newPrice.toString(),
-        change: "+"+change.toString(),
-        last: oldPrice.toString(),
+        price: newPrice.toFixed(2).toString(),
+        change: "+"+change.toFixed(2).toString(),
+        last: oldPrice.toFixed(2).toString(),
         mentions: mentions.toString(),
       });
       
@@ -78,9 +78,9 @@ export default function Home(): JSX.Element {
 
     client.models.Stock.update({
       id: stock[randIndex].id,
-      price: newPrice.toString(),
-      change: "+"+ change.toString(),
-      last: oldPrice.toString(),
+      price: newPrice.toFixed(2).toString(),
+      change: "+"+ change.toFixed(2).toString(),
+      last: oldPrice.toFixed(2).toString(),
       mentions: mentions.toString(),
     });
   }
@@ -99,9 +99,9 @@ export default function Home(): JSX.Element {
 
     client.models.Stock.update({
       id: stock[randIndex].id,
-      price: newPrice.toString(),
-      change: "-" + change.toString(),
-      last: oldPrice.toString(),
+      price: newPrice.toFixed(2).toString(),
+      change: "-" + change.toFixed(2).toString(),
+      last: oldPrice.toFixed(2).toString(),
       mentions: mentions.toString(),
     });
   }

@@ -28,7 +28,7 @@ export default function AddStocks() {
         client.models.Stock.create({
             name: name,
             symbol: symbol,
-            price: price,
+            price: Number(price).toFixed(2).toString(),
 
         })
     }
