@@ -43,7 +43,7 @@ export default function MarketOverview() {
   
   function findIndices() {
     indices = stock;
-    indices.sort((a, b) => Number(b.value) - Number(a.value));
+    indices.sort((a, b) => Number(b.price) - Number(a.price));
     console.log(indices);
   }
 
