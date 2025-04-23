@@ -16,6 +16,7 @@ export default function ChangeHours() {
     const [close, setClose] = useState(new Date());
     const [selectedDates, setSelectedDates] = useState([new Date()]);
     var [currentTime, setCurrentTime] = useState(new Date());
+    var stringDates = "";
 
     //const [startDate, setStartDate] = useState(new Date());
     useEffect(() => {
@@ -35,18 +36,22 @@ export default function ChangeHours() {
 
     function editHours() {
 
-        window.prompt("Are the times of: Open: " + open.toISOString() + " and Close: " + close.toISOString() + " Correct?");
-        console.log(market);
+        window.alert("Are the times of: Open: " + open.toLocaleTimeString() + " and Close: " + close.toLocaleTimeString() + " Correct?");
 
         client.models.Markethours.create({
-            open: open.toString(),
-            close: close.toString(),
+            open: open.toLocaleTimeString(),
+            close: close.toLocaleTimeString(),
 
         })        
     }
 
     function selectDays() {
-        console.log(selectedDates);
+        for(let i=0; i<selectedDates.length; i++) {
+            stringDates += selectedDates[i].toString().substring(4,15).replace(/\s/g,"/") + ",";
+            
+        }
+        window.alert(stringDates);  
+        console.log(market);      
     }
 
     return (
@@ -74,7 +79,7 @@ export default function ChangeHours() {
                 <Form onSubmit={selectDays}>
                     <Form.Group className="mb-3" controlId="daysForm.ControlInput1">
                         <Form.Label className="text-muted">Select Dates:  </Form.Label>
-                        <DatePicker showIcon toggleCalendarOnIconClick isClearable selectedDates={selectedDates} selectsMultiple onChange={(time) => time && setSelectedDates(time)} shouldCloseOnSelect={false} disabledKeyboardNavigation/>
+                        <DatePicker showIcon toggleCalendarOnIconClick selectedDates={selectedDates} selectsMultiple onChange={(time) => time && setSelectedDates(time)} shouldCloseOnSelect={false} disabledKeyboardNavigation/>
                     </Form.Group>
                     <Button variant="outline-primary" id="daysSubmit" as="input" type="submit"/>
                 </Form>
