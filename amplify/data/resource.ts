@@ -64,7 +64,9 @@ const schema = a.schema({
   .model({
     accountvalue: a.string().default("0"),
     balance: a.string().default("0"),
-  })
+  }).authorization((allow) => [
+    allow.owner(),
+  ])
 });
 
 export type Schema = ClientSchema<typeof schema>;
