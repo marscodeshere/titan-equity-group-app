@@ -19,6 +19,11 @@ const features: { title: string; desc: string }[] = [
 ];
 
 var randIndex;
+var randNightChanges = ["1","2"];
+var newPrice;
+var oldPrice;
+var change;
+var mentions;
 
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
@@ -38,12 +43,37 @@ export default function Home(): JSX.Element {
 
   }, []);
 
-  function generateRandom() {
+
+  function generateRandomNight() {
+    randNightChanges = [];
+    for(let i=0; i<2; i++) {
+      randIndex = Math.floor(Math.random() * (stock.length - 1));
+      randNightChanges.push(stock[randIndex].id);
+      change = Math.floor(Math.random() * 10);
+      oldPrice = Number(stock[randIndex].price);
+      newPrice = oldPrice + change;
+      mentions = Math.floor(Math.random() * 100);
+
+      client.models.Stock.update({
+        id: randNightChanges[i],
+        price: newPrice.toString(),
+        change: change.toString(),
+        last: oldPrice.toString(),
+        mentions: mentions.toString(),
+      });
+      
+    }
+
+ 
+  }
+
+  function generateRandomDay() {
     randIndex = Math.floor(Math.random() * (stock.length - 1));
     console.log(stock[randIndex]);
   }
 
-  setInterval(generateRandom, 100000);
+  window.onbeforeunload = generateRandomNight;
+  setInterval(generateRandomDay, 60000);
 
   return (
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
