@@ -39,8 +39,8 @@ export default function ChangeHours() {
         console.log(market);
 
         client.models.Markethours.create({
-            open: open.toISOString(),
-            close: close.toISOString(),
+            open: open.toString(),
+            close: close.toString(),
 
         })        
     }

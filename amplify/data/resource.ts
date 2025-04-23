@@ -21,8 +21,8 @@ const schema = a.schema({
   Markethours: a
     .model({
       value: a.float().default(0.0),
-      close: a.time(),
-      open: a.time(),
+      close: a.string(),
+      open: a.string(),
     }).authorization((allow) => [
       allow.authenticated().to(['read']),
       allow.owner(),
