@@ -67,8 +67,8 @@ export default function Home(): JSX.Element {
  
   }
 
-  function generateRandomDay() {
-    randIndex = Math.floor(Math.random() * (stock.length - 1));
+  function generateRandomDayIncrease() {
+    randIndex = Math.floor(Math.random() * (stock.length));
     change = Math.floor(Math.random() * 10);
     oldPrice = Number(stock[randIndex].price);
     newPrice = oldPrice + change;
@@ -85,8 +85,27 @@ export default function Home(): JSX.Element {
     });
   }
 
+  function generateRandomDayDecrease() {
+    randIndex = Math.floor(Math.random() * (stock.length));
+    oldPrice = Number(stock[randIndex].price);
+    change = Math.floor(Math.random() * ((oldPrice*.1)*100));
+    newPrice = oldPrice - change;
+    mentions = Math.floor(Math.random() * 100);
+    
+    console.log("Changed: "+ stock[randIndex].name);
+
+    client.models.Stock.update({
+      id: stock[randIndex].id,
+      price: newPrice.toString(),
+      change: "-" + change.toString(),
+      last: oldPrice.toString(),
+      mentions: mentions.toString(),
+    });
+  }
+
   window.onbeforeunload = generateRandomNight;
-  setInterval(generateRandomDay, 60000);
+  setInterval(generateRandomDayIncrease, 90000);
+  setInterval(generateRandomDayDecrease, 40000);
 
   return (
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
