@@ -88,7 +88,10 @@ export default function Home(): JSX.Element {
   function generateRandomDayDecrease() {
     randIndex = Math.floor(Math.random() * (stock.length));
     oldPrice = Number(stock[randIndex].price);
-    change = Math.floor(Math.random() * ((oldPrice*.1)*100));
+    change = Math.floor(Math.random() * 10);
+    if(change>oldPrice) {
+      change = Math.floor(Math.random() * 5);
+    }
     newPrice = oldPrice - change;
     mentions = Math.floor(Math.random() * 100);
     
