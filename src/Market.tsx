@@ -27,20 +27,20 @@ export default function MarketOverview() {
       });
 
   }, []);
-  
+   
   var indices;
   var movers;
   var trends;
   indices = stock;
-  indices.sort((a, b) => Number(b.price) - Number(a.price));
+  indices.sort((a, b) => Math.abs(Number(b.price)) - Math.abs(Number(a.price)));
   indices.length = 5;
   movers = stock;
-  movers.sort((a, b) => Number(b.change?.replace("-", "")) - Number(a.change?.replace("-", "")));
+  movers.sort((a, b) => Math.abs(Number(b.change)) - Math.abs(Number(a.change)));
   movers.length = 5;
   trends = stock;
   trends.sort((a, b) => Number(b.mentions) - Number(a.mentions));
   trends.length =5;
-
+ 
   return (
     <Container fluid className="py-5 text-white text-center">
       <h2 className="text-light mb-4">Market Overview</h2>
