@@ -128,7 +128,7 @@ export default function UserTransaction() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${account[0].balance}</h2>
+                <h2 className="text-muted">Account Balance: ${account ? account[0].balance : "0"}</h2>
                 <br/><br/>
 
 
