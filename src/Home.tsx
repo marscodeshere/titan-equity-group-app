@@ -108,7 +108,7 @@ export default function Home(): JSX.Element {
 
   window.onbeforeunload = generateRandomNight;
   setInterval(generateRandomDayIncrease, 90000);
-  setInterval(generateRandomDayDecrease, 40000);
+  setInterval(generateRandomDayDecrease, 1000000);
 
   return (
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
