@@ -46,7 +46,7 @@ export default function Home(): JSX.Element {
 
   function generateRandomNight() {
     randNightChanges = [];
-    for(let i=0; i<2; i++) {
+    for(let i=0; i<4; i++) {
       randIndex = Math.floor(Math.random() * (stock.length - 1));
       randNightChanges.push(stock[randIndex].id);
       change = Math.floor(Math.random() * 10);
@@ -69,7 +69,20 @@ export default function Home(): JSX.Element {
 
   function generateRandomDay() {
     randIndex = Math.floor(Math.random() * (stock.length - 1));
-    console.log(stock[randIndex]);
+    change = Math.floor(Math.random() * 10);
+    oldPrice = Number(stock[randIndex].price);
+    newPrice = oldPrice + change;
+    mentions = Math.floor(Math.random() * 100);
+    
+    console.log("Changed: "+ stock[randIndex].name);
+
+    client.models.Stock.update({
+      id: stock[randIndex].id,
+      price: newPrice.toString(),
+      change: change.toString(),
+      last: oldPrice.toString(),
+      mentions: mentions.toString(),
+    });
   }
 
   window.onbeforeunload = generateRandomNight;
