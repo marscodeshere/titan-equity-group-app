@@ -183,7 +183,7 @@ export default function Home(): JSX.Element {
         <Card.Body>
           <h2 className="h5 mb-3">Market Snapshot</h2>
           <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={marketval.reverse()}>
+            <LineChart data={marketval}>
               <XAxis dataKey="time" stroke="#888" />
               <YAxis domain={[4400, 4700]} stroke="#888" />
               <Tooltip />
