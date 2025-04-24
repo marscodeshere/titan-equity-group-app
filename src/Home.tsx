@@ -23,9 +23,6 @@ var newPrice;
 var oldPrice;
 var change;
 var mentions;
-var marVal = 0;
-var setTime = "";
-var revMarVal = [{}];
 
 
 export default function Home(): JSX.Element {
@@ -138,10 +135,11 @@ export default function Home(): JSX.Element {
   }
 
   function generateMarketValue() {
+    var marVal = 0;
+    var setTime = "";
 
     for(let st in stock) {
       marVal = marVal + Number(stock[st].price);
-      console.log(marVal);
     }
 
     setTime = currentTime.toLocaleTimeString().slice(0,5);
@@ -150,8 +148,6 @@ export default function Home(): JSX.Element {
       value: marVal.toFixed(0).toString(),
       time: setTime,
     });
-
-    revMarVal = marketval.reverse();
   }
 
   window.onload = generateMarketValue;
@@ -187,7 +183,7 @@ export default function Home(): JSX.Element {
         <Card.Body>
           <h2 className="h5 mb-3">Market Snapshot</h2>
           <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={revMarVal}>
+            <LineChart data={marketval.reverse()}>
               <XAxis dataKey="time" stroke="#888" />
               <YAxis domain={[4400, 4700]} stroke="#888" />
               <Tooltip />
