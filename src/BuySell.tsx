@@ -44,8 +44,8 @@ export default function BuySell() {
     console.log(transaction);
     return(
         <Container className="py-4">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Time to Engage</h2>
+            <h1 className="text-white text-center mb-4">Time to Engage</h1>
+            <div className="d-flex justify-content-between align-items-center mb-4">               
                 <br/><br/>
                 <h2 className="text-muted">Account Balance: ${account.length===1 ? account[0].balance : "0"}</h2>
                     <br/><br/>
@@ -66,16 +66,26 @@ export default function BuySell() {
                         </Accordion.Header>
                         <Accordion.Body>
                             <Table striped bordered hover responsive>
-                            <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Mentions</th></tr></thead>
-                            <tbody>
-                                <tr>
-                                <td>{s.name}</td>
-                                <td>{s.symbol}</td>
-                                <td>{s.price}</td>
-                                <td>{s.volume}</td>
-                                <td>{s.mentions}</td>
-                                </tr>
-                            </tbody>
+                                <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Mentions</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                    <td>{s.name}</td>
+                                    <td>{s.symbol}</td>
+                                    <td>{s.price}</td>
+                                    <td>{s.volume}</td>
+                                    <td>{s.mentions}</td>
+                                    </tr>
+                                </tbody>
+                                <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Mentions</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                    <td>{s.name}</td>
+                                    <td>{s.symbol}</td>
+                                    <td>{s.price}</td>
+                                    <td>{s.volume}</td>
+                                    <td>{s.mentions}</td>
+                                    </tr>
+                                </tbody>
                             </Table>
                         </Accordion.Body>
                     </Accordion.Item>

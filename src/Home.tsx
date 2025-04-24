@@ -143,6 +143,7 @@ export default function Home(): JSX.Element {
     }
 
     setTime = currentTime.toLocaleTimeString().slice(0,5);
+    setTime.endsWith(":") ? setTime.charAt(setTime.length - 1).replace(":", "") : setTime;
 
     client.models.Marketvalue.create({
       value: marVal.toFixed(0).toString(),
@@ -184,8 +185,8 @@ export default function Home(): JSX.Element {
           <h2 className="h5 mb-3">Market Snapshot</h2>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={marketval}>
-              <XAxis dataKey="time" stroke="#888" />
-              <YAxis domain={[4400, 4700]} stroke="#888" />
+              <XAxis dataKey="time" stroke="#888" lengthAdjust={4}/>
+              <YAxis domain={[100, 1000]} stroke="#888" />
               <Tooltip />
               <Line type="monotone" dataKey="value" stroke="#007bff" strokeWidth={2} />
             </LineChart>
