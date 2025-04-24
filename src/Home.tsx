@@ -27,7 +27,8 @@ var mentions;
 
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
-  const [market, setMarket] = useState<Array<Schema["Markethours"]["type"]>>([]);
+  const [marketval, setMarketVal] = useState<Array<Schema["Marketvalue"]["type"]>>([]);
+  var [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
       client.models.Stock.observeQuery().subscribe({
@@ -37,11 +38,19 @@ export default function Home(): JSX.Element {
   }, []); 
 
   useEffect(() => {
-      client.models.Markethours.observeQuery().subscribe({
-        next: (data) => setMarket([...data.items]),
-      });
+    client.models.Marketvalue.observeQuery().subscribe({
+      next: (data) => setMarketVal([...data.items]),
+    });
 
   }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []); 
 
 
   function generateRandomNight() {
@@ -106,6 +115,23 @@ export default function Home(): JSX.Element {
     });
   }
 
+  function generateMarketValue() {
+    var marVal = 0;
+    var setTime = "";
+
+    for(let st in stock) {
+      marVal += Number(stock[st].price);
+    }
+
+    setTime = currentTime.toLocaleTimeString().slice(0,2).replace(":", "");
+
+    client.models.Marketvalue.create({
+      value: marVal.toFixed(0).toString(),
+      time: setTime,
+    });
+  }
+
+  window.onload = generateMarketValue;
   window.onbeforeunload = generateRandomNight;
   setInterval(generateRandomDayIncrease, 90000);
   setInterval(generateRandomDayDecrease, 1000000);
@@ -139,7 +165,7 @@ export default function Home(): JSX.Element {
         <Card.Body>
           <h2 className="h5 mb-3">Market Snapshot</h2>
           <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={market}>
+            <LineChart data={marketval}>
               <XAxis dataKey="time" stroke="#888" />
               <YAxis domain={[4400, 4700]} stroke="#888" />
               <Tooltip />

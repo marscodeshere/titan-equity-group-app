@@ -9,7 +9,6 @@ const schema = a.schema({
       price: a.string(),
       change: a.string().default("0"),
       volume: a.string().default("0"),
-      value: a.string().default("0"),
       last: a.string().default("0"),
       mentions: a.string().default("0"),
     })
@@ -17,9 +16,16 @@ const schema = a.schema({
       allow.authenticated().to(['read']),
       allow.owner(),
     ]),
+    Marketvalue: a
+    .model({
+      value: a.string().default("0"),
+      time: a.string(), 
+    }).authorization((allow) =>[
+      allow.authenticated().to(['read']),
+      allow.owner(),      
+    ]),
   Markethours: a
     .model({
-      value: a.float().default(0.0),
       close: a.string(),
       open: a.string(),
     }).authorization((allow) => [

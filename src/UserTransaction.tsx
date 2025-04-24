@@ -80,7 +80,7 @@ export default function UserTransaction() {
         let year = newDate.getFullYear();
         oldBal = Number(account[0].balance);
 
-        console.log("withdraw amount: " + depo);
+        console.log("withdraw amount: " + withdraw);
         console.log("old balance: "+ oldBal);
         
         if(account.length === 0) {
