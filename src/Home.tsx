@@ -23,8 +23,7 @@ var newPrice;
 var oldPrice;
 var change;
 var mentions;
-var marVal = 0;
-var setTime = "";
+
 
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
@@ -56,7 +55,7 @@ export default function Home(): JSX.Element {
 
   function generateRandomNight() {
     randNightChanges = [];
-    for(let i=0; i<4; i++) {
+    for(let i=0; i<5; i++) {
       randIndex = Math.floor(Math.random() * (stock.length - 1));
       randNightChanges.push(stock[randIndex].id);
       change = Math.floor(Math.random() * 10);
@@ -68,6 +67,25 @@ export default function Home(): JSX.Element {
         id: randNightChanges[i],
         price: newPrice.toFixed(2).toString(),
         change: "+"+change.toFixed(2).toString(),
+        last: oldPrice.toFixed(2).toString(),
+        mentions: mentions.toString(),
+      });
+      
+    }
+
+    randNightChanges = [];
+    for(let i=0; i<5; i++) {
+      randIndex = Math.floor(Math.random() * (stock.length - 1));
+      randNightChanges.push(stock[randIndex].id);
+      change = Math.floor(Math.random() * 5);
+      oldPrice = Number(stock[randIndex].price);
+      newPrice = oldPrice - change;
+      mentions = Math.floor(Math.random() * 100);
+
+      client.models.Stock.update({
+        id: randNightChanges[i],
+        price: newPrice.toFixed(2).toString(),
+        change: "-"+change.toFixed(2).toString(),
         last: oldPrice.toFixed(2).toString(),
         mentions: mentions.toString(),
       });
@@ -117,9 +135,11 @@ export default function Home(): JSX.Element {
   }
 
   function generateMarketValue() {
+    var marVal = 0;
+    var setTime = "";
 
     for(let st in stock) {
-      marVal += Number(stock[st].price);
+      marVal = marVal + Number(stock[st].price);
     }
 
     setTime = currentTime.toLocaleTimeString().slice(0,5);
@@ -163,7 +183,7 @@ export default function Home(): JSX.Element {
         <Card.Body>
           <h2 className="h5 mb-3">Market Snapshot</h2>
           <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={marketval}>
+            <LineChart data={marketval.reverse()}>
               <XAxis dataKey="time" stroke="#888" />
               <YAxis domain={[4400, 4700]} stroke="#888" />
               <Tooltip />
