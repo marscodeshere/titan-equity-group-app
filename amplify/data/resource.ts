@@ -39,19 +39,6 @@ const schema = a.schema({
       allow.authenticated().to(['read']),
       allow.owner(),      
     ]),
-  Event: a
-    .model({
-      eventId: a.id().required(),
-      date: a.datetime(),
-      event: a.string(),
-      forecast: a.string(),
-      previous: a.string(),
-    })
-    .identifier(['eventId'])
-    .authorization((allow) => [
-      allow.authenticated().to(['read']),
-      allow.owner(),
-    ]),
   Transaction: a
     .model({
       type: a.string(),
@@ -60,6 +47,17 @@ const schema = a.schema({
       stock: a.string(),
       owns: a.boolean().default(false),
       success: a.boolean().default(false),
+      stockId: a.string(),
+      shares: a.string(),
+    })
+    .authorization((allow) => [
+      allow.owner(),
+    ]),
+    Ownedstock: a
+    .model({
+      currentPrice: a.string(),
+      stockName: a.string(),
+      owns: a.boolean().default(false),
       stockId: a.string(),
       shares: a.string(),
     })

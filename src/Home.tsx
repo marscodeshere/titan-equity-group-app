@@ -185,7 +185,7 @@ export default function Home(): JSX.Element {
           <h2 className="h5 mb-3">Market Snapshot</h2>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={marketval}>
-              <XAxis dataKey="time" stroke="#888" lengthAdjust={4}/>
+              <XAxis dataKey="time" stroke="#888"/>
               <YAxis domain={[100, 1000]} stroke="#888" />
               <Tooltip />
               <Line type="monotone" dataKey="value" stroke="#007bff" strokeWidth={2} />

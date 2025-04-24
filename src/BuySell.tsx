@@ -4,7 +4,9 @@ import {
   Col,
   Table,
   Card,
-  Accordion
+  Accordion,
+  Button,
+  Modal,
 } from "react-bootstrap";
 //import {Col,Button, Alert,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,6 +21,14 @@ export default function BuySell() {
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
     const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    var owner = "No";
+    var ownShare = "0";
 
         useEffect(() => {
             client.models.Stock.observeQuery().subscribe({
@@ -76,14 +86,16 @@ export default function BuySell() {
                                     <td>{s.mentions}</td>
                                     </tr>
                                 </tbody>
-                                <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Mentions</th></tr></thead>
+                                <thead><tr><th>Owns</th><th>Shares</th><th>Actions</th></tr></thead>
                                 <tbody>
                                     <tr>
-                                    <td>{s.name}</td>
-                                    <td>{s.symbol}</td>
-                                    <td>{s.price}</td>
-                                    <td>{s.volume}</td>
-                                    <td>{s.mentions}</td>
+                                    <td>{owner}</td>
+                                    <td>{ownShare}</td>
+                                    <td>
+                                        <Button variant="primary" onClick={handleShow}>
+                                            Launch static backdrop modal
+                                        </Button>
+                                    </td>
                                     </tr>
                                 </tbody>
                             </Table>
@@ -94,6 +106,23 @@ export default function BuySell() {
 
                 </Card.Body>
             </Card>
+            <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal title</Modal.Title>
+                </Modal.Header>
+                    <Modal.Body>
+                    I will not close if you click outside me. Do not even try to press
+                    escape key.
+                    </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary">Understood</Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
+
+        
     )
 }
