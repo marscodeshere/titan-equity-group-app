@@ -39,7 +39,7 @@ export default function UserTransaction() {
         let year = newDate.getFullYear();
 
         console.log("depo amount: " + depo);
-        console.log("old balance: "+ account[0].balance);
+        console.log("old balance: "+ account[0]?.balance);
 
         if(account.length === 0) {
             client.models.Transaction.create({
@@ -128,7 +128,7 @@ export default function UserTransaction() {
         <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
             <div className="text-center mb-8">
                 <h1>Ready to make a transaction?</h1>
-                <h2 className="text-muted">Account Balance: ${account ? account[0].balance : "0"}</h2>
+                <h2 className="text-muted">Account Balance: ${account.length===1 ? account[0].balance : "0"}</h2>
                 <br/><br/>
 
 
