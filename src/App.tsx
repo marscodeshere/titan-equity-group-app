@@ -50,7 +50,7 @@ export default function App() {
             </Nav.Item>
 
           </Nav>
-          <Navbar.Text className="justify-content-end">Signed In as: {user?.signInDetails?.loginId}</Navbar.Text>
+          <Navbar.Text className="justify-content-end">Signed In as: {user?.signInDetails?.loginId?.split("@")[0]}</Navbar.Text>
           
           <Routes>
             <Route path="/" element={<Home />} />

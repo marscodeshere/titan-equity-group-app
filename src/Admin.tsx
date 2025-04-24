@@ -48,7 +48,7 @@ export default function Admin() {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2>🛠️ Admin Dashboard</h2>
           <div>
-            <span className="me-3">Welcome, {user?.signInDetails?.loginId}</span>
+            <span className="me-3">Welcome, Admin: {user?.signInDetails?.loginId?.split("@")[0]}</span>
           </div>
         </div>
   
