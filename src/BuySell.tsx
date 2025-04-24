@@ -76,24 +76,28 @@ export default function BuySell() {
                         </Accordion.Header>
                         <Accordion.Body>
                             <Table striped bordered hover responsive>
-                                <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th><th>Mentions</th></tr></thead>
+                                <thead><tr><th>Company Name</th><th>Symbol</th><th>Price</th><th>Volume</th></tr></thead>
                                 <tbody>
                                     <tr>
                                     <td>{s.name}</td>
                                     <td>{s.symbol}</td>
                                     <td>{s.price}</td>
                                     <td>{s.volume}</td>
-                                    <td>{s.mentions}</td>
                                     </tr>
                                 </tbody>
-                                <thead><tr><th>Owns</th><th>Shares</th><th>Actions</th></tr></thead>
+                                <thead><tr><th>Owns</th><th>Shares</th><th>Buy</th><th>Sell</th></tr></thead>
                                 <tbody>
                                     <tr>
                                     <td>{owner}</td>
                                     <td>{ownShare}</td>
                                     <td>
                                         <Button variant="primary" onClick={handleShow}>
-                                            Launch static backdrop modal
+                                            Buy {s.name}
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant="primary" onClick={handleShow}>
+                                            Sell {s.name}
                                         </Button>
                                     </td>
                                     </tr>
