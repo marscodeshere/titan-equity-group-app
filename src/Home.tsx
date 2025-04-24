@@ -1,6 +1,5 @@
 import Marquee from "react-fast-marquee";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -157,7 +156,6 @@ export default function Home(): JSX.Element {
       <div className="text-center mb-4">
         <h1 className="fw-bold">Your Wealth, Your Future -- Powered by Titan.</h1>
         <p className="text-muted">Rise Above. Invest Like a Titan.</p>
-        <Button variant="primary" size="lg">Get Started</Button>
       </div>
 
       {/* Market Overview */}
