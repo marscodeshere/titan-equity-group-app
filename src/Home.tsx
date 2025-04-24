@@ -24,6 +24,8 @@ var newPrice;
 var oldPrice;
 var change;
 var mentions;
+var marVal = 0;
+var setTime = "";
 
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
@@ -116,14 +118,12 @@ export default function Home(): JSX.Element {
   }
 
   function generateMarketValue() {
-    var marVal = 0;
-    var setTime = "";
 
     for(let st in stock) {
       marVal += Number(stock[st].price);
     }
 
-    setTime = currentTime.toLocaleTimeString().slice(0,2).replace(":", "");
+    setTime = currentTime.toLocaleTimeString().slice(0,5);
 
     client.models.Marketvalue.create({
       value: marVal.toFixed(0).toString(),
