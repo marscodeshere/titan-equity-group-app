@@ -7,6 +7,7 @@ import {
   Accordion,
   Button,
   Modal,
+  Form,
 } from "react-bootstrap";
 //import {Col,Button, Alert,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,6 +22,7 @@ export default function BuySell() {
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
     const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
+    const [buy, setBuy] = useState("");
 
     const [show, setShow] = useState(false);
 
@@ -52,6 +54,11 @@ export default function BuySell() {
     
         }, []); 
     console.log(transaction);
+
+    function buyStock() {
+        console.log("test");
+        handleClose();
+    }
     return(
         <Container className="py-4">
             <h1 className="text-white text-center mb-4">Time to Engage</h1>
@@ -104,27 +111,31 @@ export default function BuySell() {
                                 </tbody>
                             </Table>
                         </Accordion.Body>
-                        <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Modal title</Modal.Title>
-                            </Modal.Header>
-                                <Modal.Body>
-                                I will not close if you click outside me. Do not even try to press
-                                escape key. {s.name}
-                                </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>
-                                    Cancel
-                                </Button>
-                                <Button variant="primary">Confirm</Button>
-                            </Modal.Footer>
-                        </Modal>
                     </Accordion.Item>
                     ))}   
                     </Accordion>
 
                 </Card.Body>
             </Card>
+
+            <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal title</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={buyStock}>
+                        <Form.Group className="mb-3" controlId="buyForm.ControlInput1">
+                            <Form.Label className="text-muted">Buy stock:</Form.Label>
+                            <Form.Control size="lg" type="text" placeholder="00.00" value={buy} onChange={(e) => setBuy(e.target.value)}/>
+                        </Form.Group>
+                    </Form>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+                        <Button variant="outline-primary" id="buySubmit" as="input" type="submit">Confirm</Button>
+                    </Modal.Footer>
+                </Modal.Body>
+
+            </Modal>
         </Container>
 
         
