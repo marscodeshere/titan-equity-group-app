@@ -12,6 +12,7 @@ import UserTransaction from './UserTransaction.tsx';
 import Admin from './Admin.tsx';
 import AddStocks from './AddStocks.tsx';
 import ChangeHours from './ChangeHours.tsx';
+import BuySell from './BuySell.tsx';
 
 export default function App() {
 
@@ -27,7 +28,10 @@ export default function App() {
               <NavLink to="/portfolio" className="nav-link">Your Portfolio</NavLink>
             </Nav.Item>
             <Nav.Item>
-              <NavLink to="/market" className="nav-link">Market</NavLink>
+              <NavLink to="/market" className="nav-link">Market Overview</NavLink>
+            </Nav.Item>
+            <Nav.Item>
+              <NavLink to="/buysell" className="nav-link">Buy Sell</NavLink>
             </Nav.Item>
             <Nav.Item>
               <NavLink to="/userTransaction" className="nav-link">Transactions</NavLink>
@@ -52,6 +56,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/portfolio" element={<Portfolio />}/>
             <Route path="/market" element={<Market />}/>
+            <Route path="/buysell" element={<BuySell />}/>
             <Route path="/userTransaction" element={<UserTransaction />}/>
             <Route path="/admin" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <Admin /> : <Home />}/> 
             <Route path="/addstocks" element={user?.signInDetails?.loginId?.includes("@asu.edu") ? <AddStocks/> : <Home />}></Route>
