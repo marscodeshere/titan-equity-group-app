@@ -24,8 +24,11 @@ export default function BuySell() {
 
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleBuyClose = () => setShow(false);
+    const handleBuyShow = () => setShow(true);
+
+    const handleSellClose = () => setShow(false);
+    const handleSellShow = () => setShow(true);
 
     var owner = "No";
     var ownShare = "0";
@@ -55,7 +58,13 @@ export default function BuySell() {
 
     function buyStock() {
         console.log("test");
-        handleShow();
+        handleBuyShow();
+    }
+
+    
+    function sellStock() {
+        console.log("test");
+        handleSellShow();
     }
     return(
         <Container className="py-4">
@@ -101,7 +110,7 @@ export default function BuySell() {
                                         </Button>
                                     </td>
                                     <td>
-                                        <Button variant="primary" onClick={buyStock}>
+                                        <Button variant="primary" onClick={sellStock}>
                                             Sell {s.name}
                                         </Button>
                                     </td>
@@ -116,16 +125,29 @@ export default function BuySell() {
                 </Card.Body>
             </Card>
 
-            <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+            <Modal show={show} onHide={handleBuyClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     
                 </Modal.Body>
                 <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                        <Button variant="outline-primary" onClick={handleClose}>Confirm</Button>
+                        <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
+                        <Button variant="outline-primary" onClick={handleBuyClose}>Confirm Purchase</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={show} onHide={handleSellClose} backdrop="static" keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Sell Stock</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    
+                </Modal.Body>
+                <Modal.Footer>
+                        <Button variant="secondary" onClick={handleSellClose}>Cancel</Button>
+                        <Button variant="outline-primary" onClick={handleSellClose}>Confirm Sale</Button>
                 </Modal.Footer>
             </Modal>
         </Container>
