@@ -7,7 +7,6 @@ import {
   Accordion,
   Button,
   Modal,
-  Form,
 } from "react-bootstrap";
 //import {Col,Button, Alert,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,7 +21,6 @@ export default function BuySell() {
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
     const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
-    const [buy, setBuy] = useState("");
 
     const [show, setShow] = useState(false);
 
@@ -57,7 +55,7 @@ export default function BuySell() {
 
     function buyStock() {
         console.log("test");
-        handleClose();
+        handleShow();
     }
     return(
         <Container className="py-4">
@@ -98,12 +96,12 @@ export default function BuySell() {
                                     <td>{owner}</td>
                                     <td>{ownShare}</td>
                                     <td>
-                                        <Button variant="primary" onClick={handleShow}>
+                                        <Button variant="primary" onClick={buyStock}>
                                             Buy {s.name}
                                         </Button>
                                     </td>
                                     <td>
-                                        <Button variant="primary" onClick={handleShow}>
+                                        <Button variant="primary" onClick={buyStock}>
                                             Sell {s.name}
                                         </Button>
                                     </td>
@@ -123,18 +121,12 @@ export default function BuySell() {
                     <Modal.Title>Modal title</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={buyStock}>
-                        <Form.Group className="mb-3" controlId="buyForm.ControlInput1">
-                            <Form.Label className="text-muted">Buy stock:</Form.Label>
-                            <Form.Control size="lg" type="text" placeholder="00.00" value={buy} onChange={(e) => setBuy(e.target.value)}/>
-                        </Form.Group>
-                    </Form>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                        <Button variant="outline-primary" id="buySubmit" as="input" type="submit">Confirm</Button>
-                    </Modal.Footer>
+                    
                 </Modal.Body>
-
+                <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+                        <Button variant="outline-primary" onClick={handleClose}>Confirm</Button>
+                </Modal.Footer>
             </Modal>
         </Container>
 
