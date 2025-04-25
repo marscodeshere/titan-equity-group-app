@@ -127,7 +127,8 @@ export default function BuySell() {
                 </Card.Body>
             </Card>
 
-            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered
+                className='shadow-lg'>
                 <Modal.Header closeButton>
                     <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
@@ -151,7 +152,8 @@ export default function BuySell() {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered
+                className="shadow-lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Sell Stock</Modal.Title>
                 </Modal.Header>
