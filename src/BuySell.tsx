@@ -65,8 +65,9 @@ export default function BuySell() {
     
         }, []); 
     console.log(transaction);
+    console.log(ownedStock);
 
-    function buyStock() {
+    {/*function buyStock() {
         console.log(stock[Number(stockBuyIndex)].name);
         console.log(stockBuyAmount);
         let newDate = new Date();
@@ -166,7 +167,7 @@ export default function BuySell() {
     }
 
     
-    {/*function sellStock() {
+    function sellStock() {
         console.log("test");
         handleSellClose();
     }*/}
@@ -206,8 +207,8 @@ export default function BuySell() {
                                 <thead><tr><th>Owns</th><th>Shares</th><th>Buy</th><th>Sell</th></tr></thead>
                                 <tbody>
                                     <tr>
-                                    <td></td>
-                                    <td></td>
+                                    <td>no</td>
+                                    <td>no</td>
                                     <td>
                                         <Button variant="primary" onClick={handleBuyShow}>
                                             Buy {s.name}
@@ -255,7 +256,7 @@ export default function BuySell() {
                     <h4 className='text-muted'>Your account balance is: ${account.length===1 ? account[0].balance : "0.00"}</h4>
                     <br/>
                     <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
-                    <Button variant="outline-primary" onClick={buyStock}>Confirm Purchase</Button>    
+                    <Button variant="outline-primary" onClick={handleBuyClose}>Confirm Purchase</Button>    
                 </Form>                     
                 </Modal.Body>
 
