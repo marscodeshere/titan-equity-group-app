@@ -149,10 +149,8 @@ export default function BuySell() {
                         <br/>
                         <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
-                        <Button variant="outline-primary" id="buySubmit" as="input" type="submit">Confirm Purchase</Button>
-                    </Modal.Footer>
+                    <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
+                    <Button variant="outline-primary" id="buySubmit" as="input" type="submit">Confirm Purchase</Button>    
                 </Form>                     
                 </Modal.Body>
 
