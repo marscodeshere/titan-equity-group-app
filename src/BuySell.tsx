@@ -251,7 +251,7 @@ export default function BuySell() {
                         <Form.Control type="text" placeholder="00" autoFocus value={stockBuyAmount} onChange={(e) => setStockBuyAmount(e.target.value)}/>
                     </Form.Group>
                     <br/>
-                    <h3>That many shares will cost: {(Number(stockBuyAmount)*Number(stock[Number(stockBuyIndex)].price)).toFixed(2)}</h3>
+                    <h3>That many shares will cost: {(Number(stockBuyAmount)*Number(stock[Number(stockBuyIndex)].price)).toFixed(2).toString()}</h3>
                     <br/>
                     <h4 className='text-muted'>Your account balance is: ${account.length===1 ? account[0].balance : "0.00"}</h4>
                     <br/>
