@@ -24,16 +24,16 @@ export default function BuySell() {
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
     const [buyShow, setBuyShow] = useState(false);
-    const [sellShow, setSellShow] = useState(false);
-
     const handleBuyClose = () => setBuyShow(false);
     const handleBuyShow = () => setBuyShow(true);
 
+    const [sellShow, setSellShow] = useState(false);
     const handleSellClose = () => setSellShow(false);
     const handleSellShow = () => setSellShow(true);
 
     var owner = "No";
     var ownShare = "0";
+    const [stockIndex, setStockIndex] = useState("");
 
         useEffect(() => {
             client.models.Stock.observeQuery().subscribe({
@@ -59,15 +59,17 @@ export default function BuySell() {
     console.log(transaction);
 
     function buyStock() {
-        console.log("test");
-        handleBuyShow();
+        console.log(stockIndex);
+        console.log(stock[Number(stockIndex)].name)
+        console.log(stock);
+        handleBuyClose();
     }
 
     
-    function sellStock() {
+    {/*function sellStock() {
         console.log("test");
-        handleSellShow();
-    }
+        handleSellClose();
+    }*/}
     return(
         <Container className="py-4">
             <h1 className="text-white text-center mb-4">Time to Engage</h1>
@@ -107,12 +109,12 @@ export default function BuySell() {
                                     <td>{owner}</td>
                                     <td>{ownShare}</td>
                                     <td>
-                                        <Button variant="primary" onClick={buyStock}>
+                                        <Button variant="primary" onClick={handleBuyShow}>
                                             Buy {s.name}
                                         </Button>
                                     </td>
                                     <td>
-                                        <Button variant="primary" onClick={sellStock}>
+                                        <Button variant="primary" onClick={handleSellShow}>
                                             Sell {s.name}
                                         </Button>
                                     </td>
@@ -133,9 +135,10 @@ export default function BuySell() {
                     <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Form>
-                    <Form.Select aria-label="Default select example">
-                        <option>Stocks Available to Buy</option>
+                <Form onSubmit={buyStock}>
+                    <Modal.Title>Select a Stock</Modal.Title>
+                    <br/>
+                    <Form.Select aria-label="Default select example" id="buySelect" name="buySelect" value={stockIndex} onChange={(e) => setStockIndex(e.target.value)}>
                         {stock.map((s, index) => (
                             <option value={index}>{s.name}</option>
                         ))}    
@@ -143,14 +146,16 @@ export default function BuySell() {
                     <br/><br/>
                     <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
                         <Modal.Title>How much would you like to invest?</Modal.Title>
+                        <br/>
                         <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
+                        <Button variant="outline-primary" id="buySubmit" as="input" type="submit">Confirm Purchase</Button>
+                    </Modal.Footer>
                 </Form>                     
                 </Modal.Body>
-                <Modal.Footer>
-                        <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
-                        <Button variant="outline-primary" onClick={handleBuyClose}>Confirm Purchase</Button>
-                </Modal.Footer>
+
             </Modal>
 
             <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered
@@ -169,6 +174,7 @@ export default function BuySell() {
                     <br/><br/>
                     <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
                         <Modal.Title>How much would you like to sell?</Modal.Title>
+                        <br/>
                         <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
                 </Form> 
