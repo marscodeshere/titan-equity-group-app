@@ -7,6 +7,7 @@ import {
   Accordion,
   Button,
   Modal,
+  Form,
 } from "react-bootstrap";
 //import {Col,Button, Alert,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,13 +23,14 @@ export default function BuySell() {
     const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
-    const [show, setShow] = useState(false);
+    const [buyShow, setBuyShow] = useState(false);
+    const [sellShow, setSellShow] = useState(false);
 
-    const handleBuyClose = () => setShow(false);
-    const handleBuyShow = () => setShow(true);
+    const handleBuyClose = () => setBuyShow(false);
+    const handleBuyShow = () => setBuyShow(true);
 
-    const handleSellClose = () => setShow(false);
-    const handleSellShow = () => setShow(true);
+    const handleSellClose = () => setSellShow(false);
+    const handleSellShow = () => setSellShow(true);
 
     var owner = "No";
     var ownShare = "0";
@@ -125,12 +127,28 @@ export default function BuySell() {
                 </Card.Body>
             </Card>
 
-            <Modal show={show} onHide={handleBuyClose} backdrop="static" keyboard={false}>
+            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    
+                <Form>
+                    <Form.Group className="mb-3" controlId="buyForm.ControlInput1">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control
+                            type="email"
+                            placeholder="name@example.com"
+                            autoFocus
+                        />
+                    </Form.Group>
+                    <Form.Group
+                    className="mb-3"
+                    controlId="buy.ControlTextarea1"
+                    >
+                        <Form.Label>Example textarea</Form.Label>
+                        <Form.Control as="textarea" rows={3} />
+                    </Form.Group>
+                </Form>                     
                 </Modal.Body>
                 <Modal.Footer>
                         <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
@@ -138,12 +156,28 @@ export default function BuySell() {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={show} onHide={handleSellClose} backdrop="static" keyboard={false}>
+            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Sell Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    
+                <Form>
+                    <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control
+                            type="email"
+                            placeholder="name@example.com"
+                            autoFocus
+                        />
+                    </Form.Group>
+                    <Form.Group
+                    className="mb-3"
+                    controlId="sellForm.ControlTextarea1"
+                    >
+                        <Form.Label>Example textarea</Form.Label>
+                        <Form.Control as="textarea" rows={3} />
+                    </Form.Group>
+                </Form> 
                 </Modal.Body>
                 <Modal.Footer>
                         <Button variant="secondary" onClick={handleSellClose}>Cancel</Button>
