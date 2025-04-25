@@ -127,26 +127,21 @@ export default function BuySell() {
                 </Card.Body>
             </Card>
 
-            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false}>
+            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form>
-                    <Form.Group className="mb-3" controlId="buyForm.ControlInput1">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="name@example.com"
-                            autoFocus
-                        />
-                    </Form.Group>
-                    <Form.Group
-                    className="mb-3"
-                    controlId="buy.ControlTextarea1"
-                    >
-                        <Form.Label>Example textarea</Form.Label>
-                        <Form.Control as="textarea" rows={3} />
+                    <Form.Select aria-label="Default select example">
+                        <option>Stocks Available to Buy</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </Form.Select>
+                    <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
+                        <Form.Label>How much would you like to spend?</Form.Label>
+                        <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
                 </Form>                     
                 </Modal.Body>
@@ -156,26 +151,21 @@ export default function BuySell() {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false}>
+            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Sell Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form>
+                    <Form.Select aria-label="Default select example">
+                        <option>Stocks Available to Sell</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </Form.Select>
                     <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="name@example.com"
-                            autoFocus
-                        />
-                    </Form.Group>
-                    <Form.Group
-                    className="mb-3"
-                    controlId="sellForm.ControlTextarea1"
-                    >
-                        <Form.Label>Example textarea</Form.Label>
-                        <Form.Control as="textarea" rows={3} />
+                        <Form.Label>How much would you like to spend?</Form.Label>
+                        <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
                 </Form> 
                 </Modal.Body>
