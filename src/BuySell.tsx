@@ -136,12 +136,13 @@ export default function BuySell() {
                 <Form>
                     <Form.Select aria-label="Default select example">
                         <option>Stocks Available to Buy</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        {stock.map((s, index) => (
+                            <option value={index}>{s.name}</option>
+                        ))}    
                     </Form.Select>
+                    <br/><br/>
                     <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
-                        <Form.Label>How much would you like to spend?</Form.Label>
+                        <Modal.Title>How much would you like to invest?</Modal.Title>
                         <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
                 </Form>                     
@@ -165,8 +166,9 @@ export default function BuySell() {
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </Form.Select>
+                    <br/><br/>
                     <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
-                        <Form.Label>How much would you like to spend?</Form.Label>
+                        <Modal.Title>How much would you like to sell?</Modal.Title>
                         <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
                 </Form> 
