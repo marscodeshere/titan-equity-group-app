@@ -135,7 +135,7 @@ export default function BuySell() {
                     <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Form onSubmit={buyStock}>
+                <Form>
                     <Modal.Title>Select a Stock</Modal.Title>
                     <br/>
                     <Form.Select aria-label="Default select example" id="buySelect" name="buySelect" value={stockIndex} onChange={(e) => setStockIndex(e.target.value)}>
@@ -150,7 +150,7 @@ export default function BuySell() {
                         <Form.Control type="text" placeholder="00.00" autoFocus/>
                     </Form.Group>
                     <Button variant="secondary" onClick={handleBuyClose}>Cancel</Button>
-                    <Button variant="outline-primary" id="buySubmit" as="input" type="submit">Confirm Purchase</Button>    
+                    <Button variant="outline-primary" onClick={buyStock}>Confirm Purchase</Button>    
                 </Form>                     
                 </Modal.Body>
 
