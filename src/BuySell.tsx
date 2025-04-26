@@ -103,7 +103,7 @@ export default function BuySell() {
             window.alert("You do not have enough money to buy: "+ stock[Number(stockBuyIndex)].name +". Deposit funds to buy these shares which cost: $" + transAmount +".");
         }
         else if (account.length===1 && (oldBal >= transAmount)){
-            if(ownedStock.includes(stock[Number(stockBuyIndex)]) === false) {
+            if(ownedStock.length === 0) {
                 client.models.Transaction.create({
                     type: "buystock",
                     amount: transAmount.toString(), 
@@ -131,8 +131,13 @@ export default function BuySell() {
                     balance: newBal.toFixed(2).toString(),
                     accountvalue:  newAccountVal.toFixed(0).toString(),
                 })
-            }
-            else {
+
+            } else {
+                for(let st in ownedStock) {
+                    if(ownedStock.includes(ownedStock[st]) === false) {
+                        
+                    }
+                }
                 for(let st in ownedStock) {
                     if(stock[Number(stockBuyIndex)].id === ownedStock[st].stockId) {
                         client.models.Ownedstock.update({
@@ -143,29 +148,61 @@ export default function BuySell() {
                             stockId: stock[Number(stockBuyIndex)].id,
                             shares: shareAmount,
                         });
-
+    
+                        client.models.Transaction.create({
+                            type: "buystock",
+                            amount: transAmount.toString(), 
+                            date: `${year}-${month}-${date}`,
+                            stock: stock[Number(stockBuyIndex)].name,
+                            owns: true,
+                            success: true,
+                            stockId: stock[Number(stockBuyIndex)].id,
+                            shares: shareAmount,
+                        });
+        
+                        client.models.Account.update({
+                            id: account[0].id,
+                            balance: newBal.toFixed(2).toString(),
+                            accountvalue:  newAccountVal.toFixed(0).toString(),
+                        });
+    
                         break;
                     }
 
+                    else if(ownedStock.includes(ownedStock[st])) {
+                        continue;
+                    }
                     
+                    else {
+                        client.models.Transaction.create({
+                            type: "buystock",
+                            amount: transAmount.toString(), 
+                            date: `${year}-${month}-${date}`,
+                            stock: stock[Number(stockBuyIndex)].name,
+                            owns: true,
+                            success: true,
+                            stockId: stock[Number(stockBuyIndex)].id,
+                            shares: shareAmount,
+                        });
+        
+                        client.models.Ownedstock.create({
+                           currentPrice:  stock[Number(stockBuyIndex)].price,
+                           stockName: stock[Number(stockBuyIndex)].name,
+                           owns: true,
+                           stockId: stock[Number(stockBuyIndex)].id,
+                           shares: shareAmount,
+                        });
+        
+                        newBal = oldBal - transAmount;
+                        newAccountVal = Number(account[0].accountvalue) + transAmount;
+        
+                        client.models.Account.update({
+                            id: account[0].id,
+                            balance: newBal.toFixed(2).toString(),
+                            accountvalue:  newAccountVal.toFixed(0).toString(),
+                        })
+                    }
                 }
-
-                client.models.Transaction.create({
-                    type: "buystock",
-                    amount: transAmount.toString(), 
-                    date: `${year}-${month}-${date}`,
-                    stock: stock[Number(stockBuyIndex)].name,
-                    owns: true,
-                    success: true,
-                    stockId: stock[Number(stockBuyIndex)].id,
-                    shares: shareAmount,
-                });
-
-                client.models.Account.update({
-                    id: account[0].id,
-                    balance: newBal.toFixed(2).toString(),
-                    accountvalue:  newAccountVal.toFixed(0).toString(),
-                });
             }
         }
         handleBuyClose();
