@@ -134,11 +134,6 @@ export default function BuySell() {
 
             } else {
                 for(let st in ownedStock) {
-                    if(ownedStock.includes(ownedStock[st]) === false) {
-                        
-                    }
-                }
-                for(let st in ownedStock) {
                     if(stock[Number(stockBuyIndex)].id === ownedStock[st].stockId) {
                         client.models.Ownedstock.update({
                             id: ownedStock[st].id,
@@ -159,7 +154,10 @@ export default function BuySell() {
                             stockId: stock[Number(stockBuyIndex)].id,
                             shares: shareAmount,
                         });
-        
+
+                        newBal = oldBal - transAmount;
+                        newAccountVal = Number(account[0].accountvalue) + transAmount;
+                        
                         client.models.Account.update({
                             id: account[0].id,
                             balance: newBal.toFixed(2).toString(),
