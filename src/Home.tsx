@@ -11,151 +11,108 @@ import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
 
+const formatChange = (change: number, isIncrease: boolean) => `${isIncrease ? "+" : "-"}${change.toFixed(2)}`;
+
 const features: { title: string; desc: string }[] = [
   { title: "Real-Time Trading", desc: "Instant market access." },
   { title: "Portfolio Tracking", desc: "Manage your investments." },
   { title: "Market Insights", desc: "AI-driven analytics." },
 ];
 
-var randIndex;
-var randNightChanges = ["1","2"];
-var newPrice;
-var oldPrice;
-var change;
-var mentions;
-
-
 export default function Home(): JSX.Element {
   const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
-  const [marketval, setMarketVal] = useState<Array<Schema["Marketvalue"]["type"]>>([]);
-  //var [currentTime, setCurrentTime] = useState(new Date());
-
+  const [marketval, setMarketVal] = useState<Array<{ time: string; value: number }>>([]);
   useEffect(() => {
-      client.models.Stock.observeQuery().subscribe({
+      const stockSub = client.models.Stock.observeQuery().subscribe({
         next: (data) => setStock([...data.items]),
       });
+
+      return () => stockSub.unsubscribe();
 
   }, []); 
 
   useEffect(() => {
-    client.models.Marketvalue.observeQuery().subscribe({
-      next: (data) => setMarketVal([...data.items]),
+    const marketSubscription = client.models.Marketvalue.observeQuery().subscribe({
+      next: (data) => {
+        const transformed = data.items
+          .filter((item) => item.time != null && item.value != null)
+          .map((item) => ({
+            time: item.time!,
+            value: parseFloat(item.value!),
+          }));
+        setMarketVal(transformed);
+      },
     });
-
+    return () => marketSubscription.unsubscribe();
   }, []);
 
-  {/*useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+  useEffect(() => {
+    const seedInitialStocks = async () => {
+      const response = await client.models.Stock.list();
+      if (response.data.length === 0) {
+        for (const s of stock) {
+          await client.models.Stock.create({
+            name: s.name,
+            symbol: s.symbol,
+            price: s.price,
+            change: s.change,
+            last: s.last,
+            mentions: s.mentions,
+          });
+        }
+      }
+    };
+    seedInitialStocks();
+  }, []);
 
-    return () => clearInterval(intervalId);
-  }, []); */}
-
+  useEffect(() => {
+    window.onbeforeunload = generateRandomNight;
+    const intervalInc = setInterval(generateRandomDayIncrease, 90000);
+    const intervalDec = setInterval(generateRandomDayDecrease, 1000000);
+    return () => {
+      clearInterval(intervalInc);
+      clearInterval(intervalDec);
+    };
+  }, [stock]);
 
   function generateRandomNight() {
-    randNightChanges = [];
-    for(let i=0; i<5; i++) {
-      randIndex = Math.floor(Math.random() * (stock.length - 1));
-      randNightChanges.push(stock[randIndex].id);
-      change = Math.floor(Math.random() * 10);
-      oldPrice = Number(stock[randIndex].price);
-      newPrice = oldPrice + change;
-      mentions = Math.floor(Math.random() * 100);
-
-      client.models.Stock.update({
-        id: randNightChanges[i],
-        price: newPrice.toFixed(2).toString(),
-        change: "+"+change.toFixed(2).toString(),
-        last: oldPrice.toFixed(2).toString(),
-        mentions: mentions.toString(),
-      });
-      
-    }
-
-    randNightChanges = [];
-    for(let i=0; i<5; i++) {
-      randIndex = Math.floor(Math.random() * (stock.length - 1));
-      randNightChanges.push(stock[randIndex].id);
-      change = Math.floor(Math.random() * 5);
-      oldPrice = Number(stock[randIndex].price);
-      newPrice = oldPrice - change;
-      mentions = Math.floor(Math.random() * 100);
-
-      client.models.Stock.update({
-        id: randNightChanges[i],
-        price: newPrice.toFixed(2).toString(),
-        change: "-"+change.toFixed(2).toString(),
-        last: oldPrice.toFixed(2).toString(),
-        mentions: mentions.toString(),
-      });
-      
-    }
-
- 
+    if (stock.length === 0) return;
+    for (let i = 0; i < 5; i++) updateStockRandomly(true);
+    for (let i = 0; i < 5; i++) updateStockRandomly(false);
   }
 
   function generateRandomDayIncrease() {
-    randIndex = Math.floor(Math.random() * (stock.length));
-    change = Math.floor(Math.random() * 10);
-    oldPrice = Number(stock[randIndex].price);
-    newPrice = oldPrice + change;
-    mentions = Math.floor(Math.random() * 100);
-    
-    console.log("Changed: "+ stock[randIndex].name);
-
-    client.models.Stock.update({
-      id: stock[randIndex].id,
-      price: newPrice.toFixed(2).toString(),
-      change: "+"+ change.toFixed(2).toString(),
-      last: oldPrice.toFixed(2).toString(),
-      mentions: mentions.toString(),
-    });
+    if (stock.length === 0) return;
+    updateStockRandomly(true);
   }
 
   function generateRandomDayDecrease() {
-    randIndex = Math.floor(Math.random() * (stock.length));
-    oldPrice = Number(stock[randIndex].price);
-    change = Math.floor(Math.random() * 10);
-    if(change>oldPrice) {
+    if (stock.length === 0) return;
+    updateStockRandomly(false);
+  }
+
+  function updateStockRandomly(isIncrease: boolean) {
+    const randIndex = Math.floor(Math.random() * stock.length);
+    const selectedStock = stock[randIndex];
+    if (!selectedStock) return;
+
+    const oldPrice = Number(selectedStock.price);
+    let change = Math.floor(Math.random() * 10);
+    if (!isIncrease && change > oldPrice) {
       change = Math.floor(Math.random() * 5);
     }
-    newPrice = oldPrice - change;
-    mentions = Math.floor(Math.random() * 100);
-    
-    console.log("Changed: "+ stock[randIndex].name);
+
+    const newPrice = isIncrease ? oldPrice + change : oldPrice - change;
+    const mentions = Math.floor(Math.random() * 100);
 
     client.models.Stock.update({
-      id: stock[randIndex].id,
-      price: newPrice.toFixed(2).toString(),
-      change: "-" + change.toFixed(2).toString(),
-      last: oldPrice.toFixed(2).toString(),
+      id: selectedStock.id,
+      price: newPrice.toFixed(2),
+      change: formatChange(change, isIncrease),
+      last: oldPrice.toFixed(2),
       mentions: mentions.toString(),
     });
   }
-
-  {/*function generateMarketValue() {
-    var marVal = 0;
-    var setTime = "";
-
-    for(let st in stock) {
-      marVal = marVal + Number(stock[st].price);
-    }
-
-    setTime = currentTime.toLocaleTimeString().slice(0,5);
-    setTime.endsWith(":") ? setTime.charAt(setTime.length - 1).replace(":", "") : setTime;
-
-    client.models.Marketvalue.create({
-      value: marVal.toFixed(0).toString(),
-      time: setTime,
-    });
-  }*/}
-
-  //window.onload = generateMarketValue;
-  window.onbeforeunload = generateRandomNight;
-  setInterval(generateRandomDayIncrease, 90000);
-  setInterval(generateRandomDayDecrease, 1000000);
-
   return (
     <Container fluid className="min-vh-100 d-flex flex-column align-items-center py-5">
       {/* Stock Ticker */}

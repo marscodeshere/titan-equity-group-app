@@ -122,7 +122,7 @@ export default function BuySell() {
                             <Col>{s.price}</Col>
                         </Accordion.Header>
                         <Accordion.Body>
-                            <Table striped bordered hover responsive>
+                            <Table responsive>
                                 <thead><tr><th>Company Name</th><th>Symbol</th><th>Buy</th><th>Sell</th></tr></thead>
                                 <tbody>
                                     <tr>
