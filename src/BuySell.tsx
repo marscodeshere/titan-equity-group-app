@@ -32,6 +32,9 @@ export default function BuySell() {
     const handleSellClose = () => setSellShow(false);
     const handleSellShow = () => setSellShow(true);
 
+    var owner = "No";
+    var ownShare = "0";
+
     const [stockBuyIndex, setStockBuyIndex] = useState("");
     const [stockBuyAmount, setStockBuyAmount] = useState("");
 
@@ -209,8 +212,8 @@ export default function BuySell() {
                                 <thead><tr><th>Owns</th><th>Shares</th><th>Buy</th><th>Sell</th></tr></thead>
                                 <tbody>
                                     <tr>
-                                    <td>no</td>
-                                    <td>no</td>
+                                    <td>{owner}</td>
+                                    <td>{ownShare}</td>
                                     <td>
                                         <Button variant="primary" onClick={handleBuyShow}>
                                             Buy {s.name}
@@ -252,7 +255,7 @@ export default function BuySell() {
                         <Form.Control type="text" placeholder="00" autoFocus value={stockBuyAmount} onChange={(e) => setStockBuyAmount(e.target.value)}/>
                     </Form.Group>
                     <br/>
-                    <Modal.Title>That many shares will cost: {(Number(stockBuyAmount)*Number(stock[Number(stockBuyIndex)].price)).toFixed(2).toString()}</Modal.Title>
+                    <Modal.Title>That many shares will cost: {stockBuyAmount ? (Number(stockBuyAmount)*Number(stock[Number(stockBuyIndex)].price)).toFixed(2).toString() : "0.00"}</Modal.Title>
                     <br/>
                     <Modal.Title className='text-muted'>Your account balance is: ${account.length===1 ? account[0].balance : "0.00"}</Modal.Title>
                     <br/>
