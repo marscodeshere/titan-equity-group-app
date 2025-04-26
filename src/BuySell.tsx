@@ -22,7 +22,7 @@ export default function BuySell() {
     const [stock, setStock] = useState<Array<Schema["Stock"]["type"]>>([]);
     const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
     const [transaction, setTransaction] = useState<Array<Schema["Transaction"]["type"]>>([]);
-    const [ownedStock, setOwnedStock] = useState<Array<Schema["Ownedstock"]["type"]>>([]);
+    //const [ownedStock, setOwnedStock] = useState<Array<Schema["Ownedstock"]["type"]>>([]);
 
     const [buyShow, setBuyShow] = useState(false);
     const handleBuyClose = () => setBuyShow(false);
@@ -57,17 +57,19 @@ export default function BuySell() {
     
         }, []); 
 
-                    
+        console.log(transaction);
+
+    {/*                
         useEffect(() => {
             client.models.Ownedstock.observeQuery().subscribe({
                 next: (data) => setOwnedStock([...data.items]),
             });
     
         }, []); 
-    console.log(transaction);
+    
     console.log(ownedStock);
 
-    {/*function buyStock() {
+    function buyStock() {
         console.log(stock[Number(stockBuyIndex)].name);
         console.log(stockBuyAmount);
         let newDate = new Date();
@@ -230,8 +232,7 @@ export default function BuySell() {
                 </Card.Body>
             </Card>
 
-            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered
-                className='shadow-lg'>
+            <Modal show={buyShow} onHide={handleBuyClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Buy Stock</Modal.Title>
                 </Modal.Header>
@@ -262,8 +263,7 @@ export default function BuySell() {
 
             </Modal>
 
-            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered
-                className="shadow-lg">
+            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Sell Stock</Modal.Title>
                 </Modal.Header>
