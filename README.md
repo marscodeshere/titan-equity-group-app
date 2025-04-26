@@ -7,7 +7,7 @@ While this project was given to us as part of our training at our university, we
 
 Super shoutout to our team members who all worked hard to develop this project.
 #### 🔗 Our Team
-[![CO](https://avatars1.githubusercontent.com/u/9919?v=4e)](https://github.com/MistaSmackus)
+[![CO](https://avatars1.githubusercontent.com/u/9919?v=4e =100x100)](https://github.com/MistaSmackus)
 
 [![MO](https://avatars1.githubusercontent.com/u/9919?v=4e)](https://github.com/marscodeshere)
 
