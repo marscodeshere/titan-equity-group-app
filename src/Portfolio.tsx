@@ -1,130 +1,142 @@
-import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import { useAuthenticator} from "@aws-amplify/ui-react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Tooltip,
-  Legend,
-  Title
-} from "chart.js";
+import { useEffect, useState } from "react";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Container, Row, Col, Table, Card } from "react-bootstrap";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "../amplify/data/resource";
 
-// Register required Chart.js components
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title);
+const client = generateClient<Schema>();
 
 export default function Portfolio() {
-  const {user} = useAuthenticator();
-  const fallbackName = user?.signInDetails?.loginId?.split("@")[0];
-  const displayName = fallbackName || "Guest";
-  const totalPortfolioValue = "$125,782.35";
-  const portfolioHistory = [120000, 121500, 123000, 124200, 125000, 126500, 125782];
+  const { user } = useAuthenticator();
+  const [account, setAccount] = useState<Array<Schema["Account"]["type"]>>([]);
+  const [ownedStock, setOwnedStock] = useState<Array<Schema["Ownedstock"]["type"]>>([]);
+  const [portfolioHistory, setPortfolioHistory] = useState<Array<{ time: string; value: number }>>([]);
+  const [lastUpdated, setLastUpdated] = useState<string>("");
 
-  // Generate mock dates for X-axis
-  const labels = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (6 - i));
-    return date.toLocaleDateString();
-  });
+  useEffect(() => {
+    const sub1 = client.models.Account.observeQuery().subscribe({
+      next: (data) => {
+        setAccount([...data.items]);
+        setLastUpdated(new Date().toLocaleString());
+      },
+    });
 
-  // Top 3 Watch Stocks
-  const watchStocks = [
-    { symbol: "GOOGL", lastPrice: "$2,785.15", change: "+1.75%" },
-    { symbol: "AMZN", lastPrice: "$3,290.05", change: "-0.58%" },
-    { symbol: "MSFT", lastPrice: "$305.22", change: "+0.91%" }
-  ];
+    const sub2 = client.models.Ownedstock.observeQuery().subscribe({
+      next: (data) => {
+        setOwnedStock([...data.items]);
+        setLastUpdated(new Date().toLocaleString());
+      },
+    });
 
-  // Purchased Stocks
-  const purchasedStocks = [
-    { symbol: "AAPL", quantity: 10, price: "$175.32" },
-    { symbol: "TSLA", quantity: 5, price: "$720.12" },
-    { symbol: "NVDA", quantity: 8, price: "$498.80" }
-  ];
+    const sub3 = client.models.Marketvalue.observeQuery().subscribe({
+      next: (data) => {
+        const transformed = data.items
+          .filter((item) => item.time != null && item.value != null)
+          .map((item) => ({
+            time: item.time!,
+            value: parseFloat(item.value!),
+          }));
+        setPortfolioHistory(transformed);
+        setLastUpdated(new Date().toLocaleString());
+      },
+    });
 
-  // Graph Data
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Portfolio Value ($)",
-        data: portfolioHistory,
-        borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.2)",
-        tension: 0.4,
-        pointRadius: 5,
-        pointBackgroundColor: "rgba(75,192,192,1)"
-      }
-    ]
-  };
+    return () => {
+      sub1.unsubscribe();
+      sub2.unsubscribe();
+      sub3.unsubscribe();
+    };
+  }, []);
+
+  const portfolioTotalValue = ownedStock.reduce((acc, stock) => {
+    const stockTotal = Number(stock.currentPrice) * Number(stock.shares);
+    return acc + stockTotal;
+  }, 0);
+
+  const currentAccount = account.length > 0 ? account[0] : null;
 
   return (
-    <Container fluid className="d-flex flex-column align-items-center mt-4">
-      {/* Portfolio Card */}
-      <Card className="m-3 p-3 bg-dark text-light w-100" style={{ maxWidth: "400px" }}>
-        <div className="text-center">
-          <h2 className="fw-bold">{displayName}'s Portfolio</h2>
-          <h4>
-            Total Value: <span className="text-success">{totalPortfolioValue}</span>
-          </h4>
-        </div>
-      </Card>
+    <Container className="py-5">
+      <h2 className="text-center text-light mb-2">Your Portfolio Overview</h2>
+      <p className="text-center text-muted mb-4" style={{ fontSize: "0.9rem" }}>
+        Last Updated: {lastUpdated}
+      </p>
 
-      {/* Portfolio Graph */}
-      <Card className="m-3 p-3 bg-secondary text-light w-100" style={{ maxWidth: "700px" }}>
-        <h5 className="text-center">Portfolio Value Over Time</h5>
-        <Line data={data} />
-      </Card>
+      <Container style={{ maxWidth: "900px" }} className="mx-auto">
 
-      {/* Watch Stocks */}
-      <Card className="m-3 p-3 bg-secondary text-light w-100" style={{ maxWidth: "800px" }}>
-        <h5 className="text-center">Top 3 Watch Stocks</h5>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Last Price</th>
-              <th>% Change</th>
-            </tr>
-          </thead>
-          <tbody>
-            {watchStocks.map((stock, index) => (
-              <tr key={index}>
-                <td>{stock.symbol}</td>
-                <td>{stock.lastPrice}</td>
-                <td style={{ color: stock.change.includes("-") ? "red" : "limegreen" }}>{stock.change}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Card>
+        <Row className="justify-content-center mb-4">
+          <Col md={8}>
+            <Card className="bg-dark text-light p-4 shadow">
+              <h4>Account Information</h4>
+              {currentAccount ? (
+                <ul className="list-unstyled">
+                  <li><strong>Username:</strong> {user?.signInDetails?.loginId || user?.username}</li>
+                  <li><strong>Account Balance:</strong> ${Number(currentAccount.balance).toFixed(2)}</li>
+                  <li><strong>Account Value (Investments):</strong> ${portfolioTotalValue.toFixed(2)}</li>
+                  <li><strong>Total Net Worth:</strong> ${(Number(currentAccount.balance) + portfolioTotalValue).toFixed(2)}</li>
+                </ul>
+              ) : (
+                <p className="text-muted">Loading account info...</p>
+              )}
+            </Card>
+          </Col>
+        </Row>
 
-      {/* Purchased Stocks */}
-      <Card className="m-3 p-3 bg-secondary text-light w-100" style={{ maxWidth: "800px" }}>
-        <h5 className="text-center">Your Purchased Stocks</h5>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Quantity</th>
-              <th>Purchase Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {purchasedStocks.map((stock, index) => (
-              <tr key={index}>
-                <td>{stock.symbol}</td>
-                <td>{stock.quantity}</td>
-                <td>{stock.price}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Card>
+        <Row className="justify-content-center mb-4">
+          <Col md={10}>
+            <Card className="bg-dark text-light p-4 shadow">
+              <h4>Portfolio History</h4>
+              {portfolioHistory.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={portfolioHistory}>
+                    <XAxis dataKey="time" stroke="#aaa" />
+                    <YAxis stroke="#aaa" />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="#0dcaf0" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <p className="text-muted">No portfolio history data yet.</p>
+              )}
+            </Card>
+          </Col>
+        </Row>
+
+        <Row className="justify-content-center">
+          <Col md={10}>
+            <Card className="bg-secondary text-light p-4 shadow">
+              <h4>Owned Stocks</h4>
+              {ownedStock.length > 0 ? (
+                <Table striped bordered hover responsive variant="dark" className="mt-3">
+                  <thead>
+                    <tr>
+                      <th>Stock Name</th>
+                      <th>Shares Owned</th>
+                      <th>Current Price</th>
+                      <th>Total Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ownedStock.map((stock) => (
+                      <tr key={stock.id}>
+                        <td>{stock.stockName}</td>
+                        <td>{stock.shares}</td>
+                        <td>${Number(stock.currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>${(Number(stock.currentPrice) * Number(stock.shares)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <p className="text-muted">You don't own any stocks yet.</p>
+              )}
+            </Card>
+          </Col>
+        </Row>
+
+      </Container>
     </Container>
-
   );
-};
+}
