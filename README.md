@@ -10,20 +10,40 @@ Link to our application:
 <h2>Acknowledgements</h2> 
 <p>Super shoutout to our team members who all worked hard to develop this project.</p>
 <p>Additional thanks to ASU for providing the assignment and supporting our team.</p>
+<br/>
 
-<h3>🔗 Our Team </h3>
-<p>⬇️CO's Github Page</p>
-<a href="https://github.com/MistaSmackus">
-  <img src="https://avatars1.githubusercontent.com/u/9919?v=4e" alt="Alt Text" width="100" height="100">
-</a>
 
-<p>⬇️MO's Github Page</p>
-<a href="https://github.com/marscodeshere">
-  <img src="https://avatars1.githubusercontent.com/u/9919?v=4e" alt="Alt Text" width="100" height="100">
-</a>
 
-<p>⬇️RP's Github Page</p>
-<a href="https://github.com/Emergency-Total-470">
-  <img src="https://avatars1.githubusercontent.com/u/9919?v=4e" alt="Alt Text" width="100" height="100">
-</a>
+<h2>🔗 Our Team </h2>
+<table>
+  <tr>
+    <th><p>⬇️CO's Github Page</p></th>
+    <th><p>⬇️MO's Github Page</p></th>
+    <th><p>⬇️RP's Github Page</p></th>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/MistaSmackus">
+        <img src="https://avatars1.githubusercontent.com/u/9919?v=4e" alt="Alt Text" width="100" height="100">
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/marscodeshere">
+        <img src="https://avatars1.githubusercontent.com/u/9919?v=4e" alt="Alt Text" width="100" height="100">
+      </a>      
+    </td>
+    <td>
+      <a href="https://github.com/Emergency-Total-470">
+        <img src="https://avatars1.githubusercontent.com/u/9919?v=4e" alt="Alt Text" width="100" height="100">
+      </a>
+    </td>
+  </tr>
+</table>
+
+
+
+
+
+
+
 
