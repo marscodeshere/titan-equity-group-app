@@ -15,6 +15,8 @@ export default function BuySell() {
     const [sellShow, setSellShow] = useState(false);
     const [stockBuyIndex, setStockBuyIndex] = useState(0);
     const [shareBuyAmount, setShareBuyAmount] = useState(0);
+    const [stockSellIndex, setStockSellIndex] = useState(0);
+    const [shareSellAmount, setShareSellAmount] = useState(0);
     const [toastMessage, setToastMessage] = useState("");
 
         useEffect(() => {
@@ -46,7 +48,11 @@ export default function BuySell() {
     }
 
     const handleSellClose = () => setSellShow(false);
-    const handleSellShow = () => setSellShow(true);
+    const handleSellShow = (index: number) => {
+        setStockSellIndex(index);
+        setShareSellAmount(0);
+        setSellShow(true);
+      };
 
     async function buyStock() {
 
@@ -97,11 +103,51 @@ export default function BuySell() {
           setBuyShow(false);
     }
 
+    async function sellStock() {
+        const selected = stock[stockSellIndex];
+        const holding = ownedStock.find((o) => o.stockId === selected.id);
+        if (!holding || shareSellAmount <= 0 || Number(holding.shares) < shareSellAmount) return;
     
-    {/*function sellStock() {
-        console.log("test");
-        handleSellClose();
-    }*/}
+        const totalGain = Number(selected.price) * shareSellAmount;
+        const newShareCount = Number(holding.shares) - shareSellAmount;
+    
+        if (newShareCount === 0) {
+          await client.models.Ownedstock.delete({ id: holding.id });
+        } else {
+          await client.models.Ownedstock.update({
+            id: holding.id,
+            shares: newShareCount.toFixed(2),
+          });
+        }
+    
+        await client.models.Transaction.create({
+          type: "sellstock",
+          amount: totalGain.toFixed(2),
+          date: new Date().toISOString(),
+          stock: selected.name,
+          owns: false,
+          success: true,
+          stockId: selected.id,
+          shares: shareSellAmount.toFixed(2),
+        });
+    
+        const userAccount = account[0];
+        await client.models.Account.update({
+          id: userAccount.id,
+          balance: (Number(userAccount.balance) + totalGain).toFixed(2),
+          accountvalue: (Number(userAccount.accountvalue) - totalGain).toFixed(2),
+        });
+    
+        setToastMessage(`Sold ${shareSellAmount} share(s) of ${selected.name}!`);
+        setSellShow(false);
+      }
+
+      
+  const availableShares = (stockId: string) => {
+    const owned = ownedStock.find((o) => o.stockId === stockId);
+    return owned ? Number(owned.shares) : 0;
+  };
+   
     return(
         <Container className="py-4">
             <h1 className="text-white text-center mb-4">Time to Engage</h1>
@@ -134,7 +180,7 @@ export default function BuySell() {
                                         </Button>
                                     </td>
                                     <td>
-                                        <Button variant="primary" onClick={handleSellShow}>
+                                        <Button variant="primary" onClick={() => handleSellShow(index)}>
                                             Sell {s.name}
                                         </Button>
                                     </td>
@@ -171,29 +217,17 @@ export default function BuySell() {
             </Modal>
 
             {/* Sell Modal */}
-            <Modal show={sellShow} onHide={handleSellClose} backdrop="static" keyboard={false} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Sell Stock</Modal.Title>
-                </Modal.Header>
+            <Modal show={sellShow} onHide={handleSellClose} centered>
+                <Modal.Header closeButton><Modal.Title>Sell Stock</Modal.Title></Modal.Header>
                 <Modal.Body>
-                <Form>
-                    <Form.Select aria-label="Default select example">
-                        <option>Stocks Available to Sell</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </Form.Select>
-                    <br/><br/>
-                    <Form.Group className="mb-3" controlId="sellForm.ControlInput1">
-                        <Modal.Title>How much would you like to sell?</Modal.Title>
-                        <br/>
-                        <Form.Control type="text" placeholder="00.00" autoFocus/>
+                    <Form.Group>
+                        <Form.Label>Shares (Available: {availableShares(stock[stockSellIndex]?.id)})</Form.Label>
+                        <Form.Control type="number" value={shareSellAmount} onChange={(e) => setShareSellAmount(Number(e.target.value))} />
                     </Form.Group>
-                </Form> 
                 </Modal.Body>
                 <Modal.Footer>
-                        <Button variant="secondary" onClick={handleSellClose}>Cancel</Button>
-                        <Button variant="outline-primary" onClick={handleSellClose}>Confirm Sale</Button>
+                    <Button variant="secondary" onClick={handleSellClose}>Cancel</Button>
+                    <Button variant="danger" onClick={sellStock}>Confirm Sell</Button>
                 </Modal.Footer>
             </Modal>
 
