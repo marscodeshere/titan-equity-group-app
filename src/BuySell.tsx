@@ -203,10 +203,10 @@ export default function BuySell() {
                     <Form.Group className="mb-3">
                         <Modal.Title>How many shares would you like to purchase?</Modal.Title>
                         <br/>
-                        <Form.Control type="text" placeholder="00" autoFocus value={shareBuyAmount} onChange={(e) => setShareBuyAmount(Number(e.target.value))}/>
+                        <Form.Control type="text" placeholder="#0" autoFocus value={shareBuyAmount} onChange={(e) => setShareBuyAmount(Number(e.target.value))}/>
                     </Form.Group>
                     <br/>
-                    <Modal.Title>That many shares will cost: {shareBuyAmount * Number(stock[stockBuyIndex]?.price) || "0.00"}</Modal.Title>
+                    <Modal.Title>That many shares will cost: {(shareBuyAmount * Number(stock[stockBuyIndex]?.price)).toFixed(2) || "0.00"}</Modal.Title>
                     <br/>
                     <Modal.Title className='text-muted'>Your account balance is: ${account.length===1 ? account[0].balance : "0.00"}</Modal.Title>
                 </Modal.Body>
@@ -221,8 +221,8 @@ export default function BuySell() {
                 <Modal.Header closeButton><Modal.Title>Sell Stock</Modal.Title></Modal.Header>
                 <Modal.Body>
                     <Form.Group>
-                        <Form.Label>You currently own: {availableShares(stock[stockSellIndex]?.id)} shares.</Form.Label>
-                        <Form.Control type="number" value={shareSellAmount} onChange={(e) => setShareSellAmount(Number(e.target.value))} />
+                        <Form.Label>You currently own {availableShares(stock[stockSellIndex]?.id)} shares of {stock[stockSellIndex]?.name}</Form.Label>
+                        <Form.Control type="text" placeholder="#0" value={shareSellAmount} onChange={(e) => setShareSellAmount(Number(e.target.value))} />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
