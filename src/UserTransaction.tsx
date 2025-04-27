@@ -151,7 +151,7 @@ export default function UserTransaction() {
 
       <h1 className="mb-4">Transaction History</h1>
       <Card style={{ width: '100%', maxWidth: '900px' }}>
-        <Accordion className="w-100" style={{ minWidth: '700px' }}>
+        <Accordion className="w-100" style={{ width: "100%", minWidth: '400px' }}>
           {transaction.map((trans, index) => (
             <Accordion.Item eventKey={String(index)} key={trans.id}>
               <Accordion.Header className="d-flex justify-content-between">
