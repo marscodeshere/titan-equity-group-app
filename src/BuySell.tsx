@@ -206,7 +206,7 @@ export default function BuySell() {
                         <Form.Control type="text" placeholder="00" autoFocus value={shareBuyAmount} onChange={(e) => setShareBuyAmount(Number(e.target.value))}/>
                     </Form.Group>
                     <br/>
-                    <Modal.Title>That many shares will cost: {shareBuyAmount * Number(stock[stockBuyIndex].price) || "0.00"}</Modal.Title>
+                    <Modal.Title>That many shares will cost: {shareBuyAmount * Number(stock[stockBuyIndex]?.price) || "0.00"}</Modal.Title>
                     <br/>
                     <Modal.Title className='text-muted'>Your account balance is: ${account.length===1 ? account[0].balance : "0.00"}</Modal.Title>
                 </Modal.Body>
